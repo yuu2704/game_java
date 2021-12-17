@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.File;
 import javax.imageio.*;
+import java.lang.Math;
 
 abstract class UOUO {
     protected double x,y,width,height,speed;
@@ -42,7 +43,7 @@ class UOUOcpu extends UOUO{
     public double getSpeed(){ return speed; }
     public double getPoint(){ return point; }
     public double getDirection(){ return direction; }
-    public int isCollision(){ return hitFlag; }
+    public int getHit(){ return hitFlag; }
 }
 
 class UOUOplayer extends UOUOcpu{
@@ -86,6 +87,28 @@ class UOUOModel extends Observable {
     //cpuのUOUOを作成
     public void createUOUOcpu(double x,double y,double w,double h,double s,int p,int d){
         UOUOcpu uo;
+        uo = new UOUOcpu(x,y,w,h,s,p,d);
+        uouoCpu.add(uo);
+        newUOUO = uo;
+        setChanged();
+        notifyObservers();
+    }
+    public void createUOUOcpu(){
+        UOUOcpu uo;
+        double x,y,w,h,s;
+        int d,p,WIDTH=1000,HIGHT=1000;
+        x=Math.random()*WIDTH/2;
+        y=Math.random()*HIGHT*0.8+HIGHT*0.1;
+        w=Math.random()*100+50;
+        h=Math.random()*70*30;
+        p=(int)w*(int)h;
+        if(Math.random()<0.5){
+            d=-1;
+            x+=WIDTH+w;
+        }else{
+            d=1;
+            x-=w;
+        }
         uo = new UOUOcpu(x,y,w,h,s,p,d);
         uouoCpu.add(uo);
         newUOUO = uo;
