@@ -7,7 +7,7 @@ class Main{
     public static void main(String argv[]) {
         UOUOModel model=new UOUOModel();
         UOUOFrame view=new UOUOFrame(model);
-        AllController Controller =new AllController(model,view);
+        AllController controller =new AllController(model,view);
     }
 }
 
@@ -86,14 +86,14 @@ class UOUOCPUController{
             //もし範囲外に言ったら消すように指示
             if(u.getDirection()==1&&u.getX()<0||u.getDirection()==-1&&u.getX()>1000){
                 model.destroyCPU(i);
-                createUOUOCPU();
+                model.createUOUOcpu();
             }
             //ヒットフラグ立ってたら消す。
-            if(u.getHit()){
+            if(u.getHit()==0){
                 UOUOplayer player=model.getPlayer();
                 player.setPoint(player.getPoint()+model.getUOUO(i).getPoint());
                 model.destroyCPU(i);
-                createUOUOCPU();
+                model.createUOUOcpu();
             }
             //総数が少なかったら生成(消した時に追加すればよくね？)
         }
