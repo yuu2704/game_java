@@ -79,17 +79,18 @@ class UOUOCPUController{
         model=m;
     }
     public void updateCPU(){
-        ArrayList<UOUOcpu> cpuList =model.getUOUOs();
-        for(int i=0; i<cpuList.size(); i++){
-            UOUOcpu u=cpuList.get(i);
-            u.setX(u.getX()+u.getSpeed()*u.getDirection());
+        for(int i=0; i<model.getUOUOs().size(); i++){
+            //System.out.println(model.getUOUOs().get(i).getX());
+            model.getUOUOs().get(i).setX(model.getUOUOs().get(i).getX()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection());
+            //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
-            if(u.getDirection()==1&&u.getX()<0||u.getDirection()==-1&&u.getX()>1000){
+            UOUOcpu u=model.getUOUOs().get(i);
+            if(u.getDirection()==-1&&u.getX()<0||u.getDirection()==1&&u.getX()>1500){
                 model.destroyCPU(i);
                 model.createUOUOcpu();
             }
             //ヒットフラグ立ってたら消す。
-            if(u.getHit()==0){
+            if(u.getHit()==1){
                 UOUOplayer player=model.getPlayer();
                 player.setPoint(player.getPoint()+model.getUOUO(i).getPoint());
                 model.destroyCPU(i);
@@ -107,25 +108,30 @@ class UOUOPlayerController implements KeyListener {
     public UOUOPlayerController(UOUOModel m, UOUOFrame view) {
         model=m.getPlayer();
         this.view=view;
-        //view.getPanel().setFocusable(true);
+        this.view.setFocusable(true);
         //System.out.println(view.isFocusable());
-        view.getPanel().addKeyListener(this);
+        this.view.addKeyListener(this);
     }
     public void keyPressed(KeyEvent e){
         // カーソルキーのイベントはkeyPressedで取得します．
+        //System.out.println("aaa");
         int c=e.getKeyCode();
         switch (c) {
             case KeyEvent.VK_LEFT: // A or ←
             model.setX(model.getX()-model.getSpeed());
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_RIGHT: // D or →
             model.setX(model.getX()+model.getSpeed());
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_UP: // W or ↑
             model.setY(model.getY()-model.getSpeed());
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_DOWN: // S
             model.setY(model.getY()+model.getSpeed());
+            //System.out.println("aaa");
             break;
         }
     }
