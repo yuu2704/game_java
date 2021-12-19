@@ -15,8 +15,8 @@ abstract class UOUO {
         
 }
 
-class Cpu extends UOUO{
-    public Cpu(double x,double y,double w,double h,double s,int p,int d,int f){
+class UOUOcpu extends UOUO{
+    public UOUOcpu(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
     // setter
@@ -40,51 +40,51 @@ class Cpu extends UOUO{
     public double getSpeed(){ return speed; }
     public double getPoint(){ return point; }
     public double getDirection(){ return direction; }
-    public int isCollision(){ return hitFlag; }
+    public int getHit(){ return hitFlag; }
     public int getFig(){ return figNum; }
 }
 
-class Player extends Cpu{
-    public Player(double x,double y,double w,double h,double s,int p,int d,int f){
+class UOUOplayer extends UOUOcpu{
+    public UOUOplayer(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
 }
 
 // Model
-class Model extends Observable {
-    protected ArrayList<Cpu> cpu;
-    protected ArrayList<String> figures;
-    protected Cpu newUOUO;
-    protected Player player;
+class UOUOModel extends Observable {
+    protected ArrayList<UOUOcpu> uouoCpu;
+    protected ArrayList<String> uouoFigures;
+    protected UOUOcpu newUOUO;
+    protected UOUOplayer uouoPlayer;
     protected static int MAX_CPU=10;
     protected int cpuNum;
-    public Model(){
-        cpu = new ArrayList<Cpu>();
-        figures = new ArrayList<String>();
+    public UOUOModel(){
+        uouoCpu = new ArrayList<UOUOcpu>();
+        uouoFigures = new ArrayList<String>();
         // pictures
-        figures.add("fish_houbou.png");
-        figures.add("fish_sakana_piranha.png");
-        figures.add("uni_broccoli.png");
+        uouoFigures.add("fish_houbou.png");
+        uouoFigures.add("fish_sakana_piranha.png");
+        uouoFigures.add("uni_broccoli.png");
         newUOUO = null;
         cpuNum = 0;
     }
 
-    public ArrayList<Cpu> getUOUOs(){
-        return cpu;
+    public ArrayList<UOUOcpu> getUOUOs(){
+        return uouoCpu;
     }
     public ArrayList<String> getFigures(){
-        return figures;
+        return uouoFigures;
     }
-    public Cpu getUOUO(int idx){
-        return cpu.get(idx);
+    public UOUOcpu getUOUO(int idx){
+        return uouoCpu.get(idx);
     }
-    public Player getPlayer(){
-        return player;
+    public UOUOplayer getPlayer(){
+        return uouoPlayer;
     }
 
     // cpuCreator
-    public void createCpu(){
-        Cpu uouo;
+    public void createUOUOcpu(){
+        UOUOcpu uo;
         double x,y,w,h,s;
         int d,p,f,WIDTH=1000,HIGHT=1000;
         x=Math.random()*WIDTH/2;
@@ -101,30 +101,28 @@ class Model extends Observable {
             x-=w;
         }
         f=(int)Math.random()+1;
-        uouo = new Cpu(x,y,w,h,s,p,d,f);
-        cpu.add(uouo);
-        newUOUO = uouo;
-        cpuNum++;
+        uo = new UOUOcpu(x,y,w,h,s,p,d,f);
+        uouoCpu.add(uo);
+        newUOUO = uo;
         setChanged();
         notifyObservers();
     }
     // cpuDestroyer
     public void destroyCPU(int idx){
-        cpu.remove(idx);
-        cpuNum--;
+        uouoCpu.remove(idx);
     }
 
     // playerInitializer
-    public void initPlayer(double x,double y,double w,double h,double s,int p,int d){
-        player = new Player(x,y,w,h,s,p,d,0);
+    public void createUOUOplayer(double x,double y,double w,double h,double s,int p,int d){
+        uouoPlayer = new UOUOplayer(x,y,w,h,s,p,d,0);
         setChanged();
         notifyObservers();
     }
-
+    
     // CollisionChecker
     public int checkCollision(int idx){
-        if(player.x<cpu.get(idx).x && player.x+player.width>cpu.get(idx).x+cpu.get(idx).width){
-            if(player.y<cpu.get(idx).y && player.y+player.height>cpu.get(idx).y+cpu.get(idx).height){
+        if(uouoPlayer.x<uouoCpu.get(idx).x && uouoPlayer.x+uouoPlayer.width>uouoCpu.get(idx).x+uouoCpu.get(idx).width){
+            if(uouoPlayer.y<uouoCpu.get(idx).y && uouoPlayer.y+uouoPlayer.height>uouoCpu.get(idx).y+uouoCpu.get(idx).height){
                 return 1;
             }
         }
