@@ -36,11 +36,11 @@ class UOUOPanel extends JPanel{
                 int y = (int)cpu.getY();
                 int w = (int)cpu.getWidth();
                 int h = (int)cpu.getHeight();
-                if(cpu.getDirection() == 1){
+                if(cpu.getDirection() == 0){
                     //g2d.drawImage(image,100,100,100+w,100+h,w,0,0,h,this);// drawImage(image,画像を置く左上と右下座標引数4つ,描画する左上と右下相対座標引数4つ,this) 左右反転
                     g2d.drawImage(image,x,y,w,h,this);// drawImage(image,縮小した時の左上と右下座標引数4つ,this) 通常
-                }else if (cpu.getDirection() == 0){
-                    //左右反転2
+                }else if (cpu.getDirection() == 1){
+                    //左右反転
                     AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
                     at.translate(-w,0);
                     AffineTransformOp atOp = new AffineTransformOp(at,null);
@@ -50,18 +50,37 @@ class UOUOPanel extends JPanel{
                 e.printStackTrace();
             }
         }
+        UOUOplayer player = model.getPlayer();
+        try{
+            file = new File(uouoFigures.get(0));
+            BufferedImage image = ImageIO.read(file);
+            int x = (int)player.getX();
+            int y = (int)player.getY();
+            int w = (int)player.getWidth();
+            int h = (int)player.getHeight();
+            if(player.getDirection() == 0){
+                g2d.drawImage(image,x,y,w,h,this);// drawImage(image,縮小した時の左上と右下座標引数4つ,this) 通常
+            }else if (player.getDirection() == 1){
+                //左右反転
+                AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
+                at.translate(-w,0);
+                AffineTransformOp atOp = new AffineTransformOp(at,null);
+                g2d.drawImage(atOp.filter(image,null), x, y, w, h,this);
+            }
+        }catch(IOException e){
+            System.out.println("player is not found");
+            e.printStackTrace();
+        }
     }
 }
 
 class UOUOFrame extends JFrame{          //show window
-    UOUOModel model;
     UOUOPanel panel;
     private int frame_height = 1000;
     private int frame_width = 1000;
-    public UOUOFrame(){
+    public UOUOFrame(UOUOModel model){
         this.setTitle("Panel1");
         this.setSize(frame_height, frame_width);
-        model = new UOUOModel();
         panel = new UOUOPanel(model);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(panel);
