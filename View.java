@@ -2,9 +2,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.awt.Image;
-import java.awt.Toolkit;
 import javax.imageio.*;
+import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -12,25 +11,67 @@ import java.util.*;
 
 
 class UOUOPanel extends JPanel{
-    protected Image backgroundImage = Toolkit.getDefaultToolkit().createImage("./5000tyoen.jpeg");
-    protected UOUOModel model;
-    protected ArrayList<UOUOcpu> uouoCpu;
-    protected ArrayList<String> uouoFigures;
-    public UOUOPanel(UOUOModel model){
+    int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
+    BufferedImage backgroundImage;
+    protected Model model;
+    protected ArrayList<Cpu> Cpu;
+    protected ArrayList<String> figures;
+    protected int frame_height;
+    protected int frame_width;
+    public UOUOPanel(Model model,int frame_height,int frame_width){
         this.model = model;
+        this.frame_height = frame_height;
+        this.frame_width = frame_width;
+        try{
+            this.backgroundImage = ImageIO.read(new File("./background_umi.jpg"));
+        }catch(IOException e){
+            System.out.println("background image file is not found.");
+            e.printStackTrace();
+        }
+        flag = 0;
+        this.setLayout(null);
         repaint();
     }
-    @Override
+
     public void paintComponent(Graphics g){     //paint method
         super.paintComponent(g);
-        g.drawImage(backgroundImage,0,0,1000,1000,this);
+        if(flag == 0){
+            startPanel(g);
+        }else if(flag == 1){
+            playPanel(g);
+        }else if(flag == 2){
+            resultPanel(g);
+        }
+    }
+
+    public void startPanel(Graphics g){     //スタート画面
+        g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
+        Image buttonicon;
+        try{
+            buttonicon = ImageIO.read(new File("./start_bottun.png"));
+            buttonicon = buttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
+            JButton startButton = new JButton(new ImageIcon(buttonicon));
+            startButton.setContentAreaFilled(false);   //ボタン透過
+            startButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
+            startButton.setBorderPainted(false);       //境界線消し
+            startButton.setFocusPainted(false);        //謎
+            startButton.setBounds(350,400,280,140);    //ボタン位置指定 真ん中
+            this.add(startButton);                     //ボタン表示
+        }catch(IOException e){
+            System.out.println("button image file is not found.");
+            e.printStackTrace();
+        }
+    }
+
+    public void playPanel(Graphics g){
+        g.drawImage(backgroundImage,0,0,frame_width,frame_height,this);
         Graphics2D g2d = (Graphics2D) g;
         File file;
-        uouoCpu = model.getUOUOs();
-        uouoFigures = model.getFigures();
-        for(UOUOcpu cpu : uouoCpu){
+        Cpu = model.getUOUOs();
+        figures = model.getFigures();
+        for(Cpu cpu : Cpu){
             try{
-                file = new File(uouoFigures.get(cpu.getFig()));
+                file = new File(figures.get(cpu.getFig()));
                 BufferedImage image = ImageIO.read(file);
                 int x = (int)cpu.getX();
                 int y = (int)cpu.getY();
@@ -47,12 +88,13 @@ class UOUOPanel extends JPanel{
                     g2d.drawImage(atOp.filter(image,null), x, y, w, h,this);
                 }
             }catch(IOException e){
+                System.out.println("Character image file is not found.");
                 e.printStackTrace();
             }
         }
-        UOUOplayer player = model.getPlayer();
+        Player player = model.getPlayer();
         try{
-            file = new File(uouoFigures.get(0));
+            file = new File(figures.get(0));
             BufferedImage image = ImageIO.read(file);
             int x = (int)player.getX();
             int y = (int)player.getY();
@@ -68,9 +110,32 @@ class UOUOPanel extends JPanel{
                 g2d.drawImage(atOp.filter(image,null), x, y, w, h,this);
             }
         }catch(IOException e){
-            System.out.println("player is not found");
+            System.out.println("Player image file is not found.");
             e.printStackTrace();
         }
+    }
+
+    public void resultPanel(Graphics g){                    //result画面
+        g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
+        Image buttonicon;
+        try{
+            buttonicon = ImageIO.read(new File("./replay_button.png"));
+            buttonicon = buttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
+            JButton replayButton = new JButton(new ImageIcon(buttonicon));
+            replayButton.setContentAreaFilled(false);   //ボタン透過
+            replayButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
+            replayButton.setBorderPainted(false);       //境界線消し
+            replayButton.setFocusPainted(false);        //謎
+            replayButton.setBounds(350,500,280,140);    //ボタン位置指定 真ん中
+            this.add(replayButton);                     //ボタン表示
+        }catch(IOException e){
+            System.out.println("button image file is not found.");
+            e.printStackTrace();
+        }
+    }
+
+    public void setflag(int flag){
+        this.flag = flag;
     }
 }
 
@@ -78,10 +143,10 @@ class UOUOFrame extends JFrame{          //show window
     UOUOPanel panel;
     private int frame_height = 1000;
     private int frame_width = 1000;
-    public UOUOFrame(UOUOModel model){
-        this.setTitle("Panel1");
+    public UOUOFrame(Model model){
+        this.setTitle("UOUO! Dream Fish!!");
         this.setSize(frame_height, frame_width);
-        panel = new UOUOPanel(model);
+        panel = new UOUOPanel(model,frame_height,frame_width);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(panel);
         this.setVisible(true);
