@@ -5,7 +5,7 @@ import java.util.*;
 class Main{
     public static void main(String argv[]) {
         Model model=new Model();
-        UOUOFrame view=new UOUOFrame(model);
+        View view=new View(model);
         AllController controller =new AllController(model,view);
     }
 }
@@ -14,12 +14,12 @@ class AllController implements ActionListener {
     protected Model model;
     protected CPUController cpu;
     protected PlayerController player;
-    protected UOUOFrame view;
+    protected View view;
     private javax.swing.Timer timer;
     protected JButton start;
     protected JButton replay;
     //int loop;
-    public AllController(Model model, UOUOFrame view) {
+    public AllController(Model model, View view) {
         this.model = model;
         this.view = view;
         //model.createUOUOplayer(500.0,500.0,100.0,100.0,20.0,0,1);
@@ -133,9 +133,9 @@ class CPUController{
 
 class PlayerController implements KeyListener {
     protected Model model;
-    protected UOUOFrame view;
+    protected View view;
     protected int[] move;
-    public PlayerController(Model m, UOUOFrame view) {
+    public PlayerController(Model m, View view) {
         move=new int[]{0,0};
         model=m;
         this.view=view;
