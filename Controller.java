@@ -21,7 +21,8 @@ class AllController implements ActionListener {
     private javax.swing.Timer timer;
     protected JButton start;
     protected JButton replay;
-    int loop;
+    protected int count;
+    //int loop;
     public AllController(Model model, View view) {
         this.model = model;
         this.view = view;
@@ -40,13 +41,18 @@ class AllController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
             if(model.getScene()==1){
-                player.action();
-                //hard用
-                cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
-                //if(loop>=cpu.getCount()){
-                //    loop=0;
-                //}
-                //-----
+                count++;
+                if(count==750){
+                    model.setScene(2);
+                }else{
+                    player.action();
+                    //hard用
+                    cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
+                    //if(loop>=cpu.getCount()){
+                    //    loop=0;
+                    //}
+                    //-----
+                }
                 view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
                     model.clearCPU();
@@ -76,7 +82,8 @@ class AllController implements ActionListener {
                 }
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
-                //view.repaint();
+                count=0;
+                view.repaint();
             }/*else{
                 model.setScene(model.getScene()+1);
                 view.getPanel().setflag(model.getScene());
@@ -222,7 +229,6 @@ class PlayerController implements KeyListener {
         }else{
             player.setY(y);
         }
-        System.out.println(player.getX()+":"+player.getY());
     }
 
     public void init(){
