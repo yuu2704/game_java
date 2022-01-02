@@ -29,16 +29,15 @@ class UOUOPanel extends JPanel{
         this.model = model;
         this.frame_height = frame_height;
         this.frame_width = frame_width;
-        player = model.getPlayer();
         this.setLayout(null);
         flag = 0;
         createLabelandButton();
+        allSetFalse();
         repaint();
     }
 
     public void paintComponent(Graphics g){     //paint method
         super.paintComponent(g);
-        allSetFalse();
         if(flag == 0){
             startPanel(g);
         }else if(flag == 1){
@@ -75,12 +74,12 @@ class UOUOPanel extends JPanel{
         //途中スコア
         score_num_Label = new JLabel();
         score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        score_num_Label.setBounds(0,frame_height-140,400,140);    //ボタン位置指定 真ん中
+        score_num_Label.setBounds(0,frame_height-300,400,140);    //ボタン位置指定 真ん中
         this.add(score_num_Label);
         //HPラベル
         hpLabel = new JLabel();
         hpLabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        hpLabel.setBounds(frame_width-400,frame_height-140,400,140);
+        hpLabel.setBounds(frame_width-400,frame_height-300,400,140);
         this.add(hpLabel);
         //"スコア"ラベル
         scorelabel = new JLabel("スコア");
@@ -122,12 +121,30 @@ class UOUOPanel extends JPanel{
     }
 
     public void startPanel(Graphics g){     //スタート画面
-        g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        startButton.setVisible(true);
+        g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);score_num_Label.setVisible(false);
+        hpLabel.setVisible(false);
+        scorelabel.setVisible(false);
+        resultscoreLabel.setVisible(false);
+        replayButton.setEnabled(false);
+        replayButton.setVisible(false);
+
         startButton.setEnabled(true);
+        startButton.setVisible(true);
     }
 
     public void playPanel(Graphics g){
+        startButton.setEnabled(false); 
+        startButton.setVisible(false);
+        scorelabel.setVisible(false);
+        resultscoreLabel.setVisible(false);
+        replayButton.setEnabled(false);
+        replayButton.setVisible(false);
+
+        score_num_Label.setVisible(true);
+        hpLabel.setVisible(true);
+
+        player = model.getPlayer();
+
         g.drawImage(backgroundImage,0,0,frame_width,frame_height,this);
         Graphics2D g2d = (Graphics2D) g;
         File file;
@@ -170,12 +187,15 @@ class UOUOPanel extends JPanel{
             System.out.println("Player image file is not found.");
             e.printStackTrace();
         }
-        score_num_Label.setVisible(true);
-        hpLabel.setVisible(true);
     }
 
     public void resultPanel(Graphics g){                    //result画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
+        startButton.setEnabled(false); 
+        startButton.setVisible(false);
+        score_num_Label.setVisible(false);
+        hpLabel.setVisible(false);
+
         scorelabel.setVisible(true);
         resultscoreLabel.setVisible(true);
         replayButton.setVisible(true);
