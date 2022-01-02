@@ -18,6 +18,8 @@ class UOUOPanel extends JPanel{
     protected ArrayList<String> figures;
     protected int frame_height;
     protected int frame_width;
+    protected JButton startButton;
+    protected JButton replayButton;
     public UOUOPanel(Model model,int frame_height,int frame_width){
         this.model = model;
         this.frame_height = frame_height;
@@ -50,7 +52,7 @@ class UOUOPanel extends JPanel{
         try{
             buttonicon = ImageIO.read(new File("./start_bottun.png"));
             buttonicon = buttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
-            JButton startButton = new JButton(new ImageIcon(buttonicon));
+            startButton = new JButton(new ImageIcon(buttonicon));
             startButton.setContentAreaFilled(false);   //ボタン透過
             startButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
             startButton.setBorderPainted(false);       //境界線消し
@@ -121,7 +123,7 @@ class UOUOPanel extends JPanel{
         try{
             buttonicon = ImageIO.read(new File("./replay_button.png"));
             buttonicon = buttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
-            JButton replayButton = new JButton(new ImageIcon(buttonicon));
+            replayButton = new JButton(new ImageIcon(buttonicon));
             replayButton.setContentAreaFilled(false);   //ボタン透過
             replayButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
             replayButton.setBorderPainted(false);       //境界線消し
@@ -136,6 +138,16 @@ class UOUOPanel extends JPanel{
 
     public void setflag(int flag){
         this.flag = flag;
+    }
+
+
+    public JButton getStartButton(){
+        return startButton;
+    }
+
+
+    public JButton getReplayButton(){
+        return replayButton;
     }
 }
 
