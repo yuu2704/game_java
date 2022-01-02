@@ -51,7 +51,7 @@ class AllController implements ActionListener {
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
-                model.initPlayer(500,500,200,100,50,0,1);
+                model.initPlayer(500,500,200,100,50,100,1);
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
@@ -95,12 +95,12 @@ class CPUController{
                 model.createCpu();
             }
             //ヒットフラグ立ってたら消す。
-            if(u.isCollision()==1){
+            if(model.checkCollision(i)==1){
                 Player player=model.getPlayer();
                 player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
                 model.destroyCPU(i);
                 model.createCpu();
-            }else if(u.isCollision()!=0){
+            }else if(model.checkCollision(i)!=0){
                 model.setScene(2);
             }
             //消した時に追加
