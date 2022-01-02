@@ -30,9 +30,6 @@ class AllController implements ActionListener {
         replay.setEnabled(false);
         start.addActionListener(this);
         replay.addActionListener(this);
-        cpu=new CPUController(model);
-        //cpu=new HardCPUCOntroller(model);
-        player=new PlayerController(model,view);
         timer = new javax.swing.Timer(40, this);
         //loop=0;
         timer.start();
@@ -50,13 +47,17 @@ class AllController implements ActionListener {
                 }
             }
             view.getPanel().repaint(); //fps25で更新
+            this.view.setFocusable(true);
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
-                model.initPlayer(500,500,20,10,5,0,1);
+                model.initPlayer(500,500,200,100,1,0,1);
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
+                cpu=new CPUController(model);
+                //cpu=new HardCPUCOntroller(model);
+                player=new PlayerController(model,view);
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
                 start.setEnabled(false);
@@ -89,7 +90,7 @@ class CPUController{
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
             Cpu u=model.getUOUOs().get(i);
-            if(u.getDirection()==-1&&u.getX()<0||u.getDirection()==1&&u.getX()>1500){
+            if(u.getDirection()==-1&&u.getX()<0||u.getDirection()==1&&u.getX()>1000){
                 model.destroyCPU(i);
                 model.createCpu();
             }
@@ -108,15 +109,20 @@ class CPUController{
 }
 
 
-class PlayerController implements KeyListener {
-    protected Player model;
+class PlayerController implements KeyListener, ActionListener  {
+    protected Player player;
     protected UOUOFrame view;
+    protected int[] move;
+    protected javax.swing.Timer timer;
     public PlayerController(Model m, UOUOFrame view) {
-        model=m.getPlayer();
+        move=new int[]{0,0};
+        player=m.getPlayer();
         this.view=view;
         this.view.setFocusable(true);
         //System.out.println(view.isFocusable());
         this.view.addKeyListener(this);
+        timer = new javax.swing.Timer(40, this);
+        timer.start();
     }
     public void keyPressed(KeyEvent e){
         // カーソルキーのイベントはkeyPressedで取得します．
@@ -124,25 +130,65 @@ class PlayerController implements KeyListener {
         int c=e.getKeyCode();
         switch (c) {
             case KeyEvent.VK_LEFT: // A or ←
-            model.setX(model.getX()-model.getSpeed());
-            //System.out.println("aaa");
+            move[0]=-1;
+            //model.setX(model.getX()-model.getSpeed());
+            System.out.println("aaa");
             break;
             case KeyEvent.VK_RIGHT: // D or →
-            model.setX(model.getX()+model.getSpeed());
-            //System.out.println("aaa");
+            move[0]=1;
+            //model.setX(model.getX()+model.getSpeed());
+            System.out.println("aaa");
             break;
             case KeyEvent.VK_UP: // W or ↑
-            model.setY(model.getY()-model.getSpeed());
-            //System.out.println("aaa");
+            move[1]=-1;
+            //model.setY(model.getY()-model.getSpeed());
+            System.out.println("aaa");
             break;
             case KeyEvent.VK_DOWN: // S
-            model.setY(model.getY()+model.getSpeed());
-            //System.out.println("aaa");
+            move[1]=1;
+            //model.setY(model.getY()+model.getSpeed());
+            System.out.println("aaa");
             break;
         }
     }
     public void keyTyped(KeyEvent e) {}
-    public void keyReleased(KeyEvent e){}
+    public void keyReleased(KeyEvent e){
+        int c=e.getKeyCode();
+        switch (c) {
+            case KeyEvent.VK_LEFT: // A or ←
+            if(move[0]==-1){
+                move[0]=0;
+            }
+            //model.setX(model.getX()-model.getSpeed());
+            System.out.println("aaa");
+            break;
+            case KeyEvent.VK_RIGHT: // D or →
+            if(move[0]==1){
+                move[0]=0;
+            }
+            //model.setX(model.getX()+model.getSpeed());
+            System.out.println("aaa");
+            break;
+            case KeyEvent.VK_UP: // W or ↑
+            if(move[1]==-1){
+                move[1]=0;
+            }
+            //model.setY(model.getY()-model.getSpeed());
+            System.out.println("aaa");
+            break;
+            case KeyEvent.VK_DOWN: // S
+            if(move[1]==1){
+                move[1]=0;
+            }
+            //model.setY(model.getY()+model.getSpeed());
+            System.out.println("aaa");
+            break;
+        }
+    }
+    public void actionPerformed(ActionEvent e) {
+        player.setX(player.getX()+move[0]*player.getSpeed());
+        player.setY(player.getY()+move[1]*player.getSpeed());
+    }
 }
 
 
