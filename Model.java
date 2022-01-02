@@ -60,7 +60,8 @@ class Player extends Cpu{
 }
 
 // Model
-class Model extends Observable {
+class Model {
+//class Model extends Observable {
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
     protected Cpu newUOUO;
@@ -123,8 +124,8 @@ class Model extends Observable {
         cpu.add(uouo);
         newUOUO = uouo;
         cpuNum++;
-        setChanged();
-        notifyObservers();
+        // setChanged();
+        // notifyObservers();
     }
     // cpuDestroyer
     public void destroyCPU(int idx){
@@ -141,8 +142,8 @@ class Model extends Observable {
     // playerInitializer
     public void initPlayer(double x,double y,double w,double h,double s,int p,int d){
         player = new Player(x,y,w,h,s,p,d,0);
-        setChanged();
-        notifyObservers();
+        // setChanged();
+        // notifyObservers();
     }
 
     // CollisionChecker
