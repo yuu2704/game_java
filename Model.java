@@ -12,7 +12,6 @@ abstract class UOUO {
         width=w; height=h; speed=s;
         point=p; direction=d; figNum=f;
     }
-        
 }
 
 class Cpu extends UOUO{
@@ -57,7 +56,7 @@ class Model extends Observable {
     protected Cpu newUOUO;
     protected Player player;
     protected static int MAX_CPU=10;
-    protected int cpuNum;
+    protected int cpuNum, gameScene=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
@@ -80,6 +79,12 @@ class Model extends Observable {
     }
     public Player getPlayer(){
         return player;
+    }
+    public void setScene(int n){
+        gameScene=n;
+    }
+    public int getScene(){
+        return gameScene;
     }
 
     // cpuCreator
