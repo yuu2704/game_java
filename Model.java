@@ -66,6 +66,7 @@ class Model {
     protected ArrayList<String> figures;
     protected Cpu newUOUO;
     protected Player player;
+    public static int WIDTH=1000, HEIGHT=1000;
     protected int cpuNum, gameScene=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
@@ -105,9 +106,9 @@ class Model {
     public void createCpu(){
         Cpu uouo;
         double x,y,w,h,s;
-        int d,p,f,WIDTH=1000,HIGHT=1000;
+        int d,p,f;
         x=Math.random()*WIDTH/2;
-        y=Math.random()*HIGHT*0.8+HIGHT*0.1;
+        y=Math.random()*HEIGHT*0.8+HEIGHT*0.1;
         w=Math.random()*100+50; // 50~150
         h=Math.random()*70+30;  // 30~100
         s=Math.random()*20+10;
