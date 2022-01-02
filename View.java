@@ -5,32 +5,58 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.util.*;
 
 
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
-    BufferedImage backgroundImage;
     protected Model model;
     protected ArrayList<Cpu> Cpu;
+    Player player;
     protected ArrayList<String> figures;
     protected int frame_height;
     protected int frame_width;
+    protected BufferedImage backgroundImage;
+
     protected JButton startButton;
     protected JButton replayButton;
+    protected JLabel scorelabel;
+    protected JLabel score_num_Label;
+    protected JLabel hpLabel;
+    protected JLabel resultscoreLabel;
+
     public UOUOPanel(Model model,int frame_height,int frame_width){
         this.model = model;
         this.frame_height = frame_height;
         this.frame_width = frame_width;
+        player = model.getPlayer();
+        this.setLayout(null);
+        flag = 0;
+        createLabelandButton();
+        repaint();
+    }
+
+    public void paintComponent(Graphics g){     //paint method
+        super.paintComponent(g);
+        allSetFalse();
+        if(flag == 0){
+            startPanel(g);
+        }else if(flag == 1){
+            playPanel(g);
+        }else if(flag == 2){
+            resultPanel(g);
+        }
+    }
+
+    public void createLabelandButton(){      //使うボタンを全部生成
+        //背景
         try{
             this.backgroundImage = ImageIO.read(new File("./background_umi.jpg"));
         }catch(IOException e){
             System.out.println("background image file is not found.");
             e.printStackTrace();
         }
-        this.setLayout(null);
+        //スタートボタン
         Image startbuttonicon;
         try{
             startbuttonicon = ImageIO.read(new File("./start_bottun.png"));
@@ -45,6 +71,28 @@ class UOUOPanel extends JPanel{
             System.out.println("button image file is not found.");
             e.printStackTrace();
         }
+        this.add(startButton);
+        //途中スコア
+        score_num_Label = new JLabel();
+        score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
+        score_num_Label.setBounds(0,frame_height-140,400,140);    //ボタン位置指定 真ん中
+        this.add(score_num_Label);
+        //HPラベル
+        hpLabel = new JLabel();
+        hpLabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
+        hpLabel.setBounds(frame_width-400,frame_height-140,400,140);
+        this.add(hpLabel);
+        //"スコア"ラベル
+        scorelabel = new JLabel("スコア");
+        scorelabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
+        scorelabel.setBounds(330,100,400,140);    //ボタン位置指定 真ん中
+        this.add(scorelabel);
+        //リザルトスコア
+        resultscoreLabel = new JLabel();
+        resultscoreLabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
+        resultscoreLabel.setBounds(330,300,400,140);    //ボタン位置指定 真ん中
+        this.add(resultscoreLabel);
+        //リプレイボタン
         Image replaybuttonicon;
         try{
             replaybuttonicon = ImageIO.read(new File("./replay_button.png"));
@@ -59,24 +107,24 @@ class UOUOPanel extends JPanel{
             System.out.println("button image file is not found.");
             e.printStackTrace();
         }
-        flag = 0;
-        repaint();
+        this.add(replayButton);
     }
 
-    public void paintComponent(Graphics g){     //paint method
-        super.paintComponent(g);
-        if(flag == 0){
-            startPanel(g);
-        }else if(flag == 1){
-            playPanel(g);
-        }else if(flag == 2){
-            resultPanel(g);
-        }
+    public void allSetFalse(){
+        startButton.setEnabled(false); 
+        startButton.setVisible(false);
+        score_num_Label.setVisible(false);
+        hpLabel.setVisible(false);
+        scorelabel.setVisible(false);
+        resultscoreLabel.setVisible(false);
+        replayButton.setEnabled(false);
+        replayButton.setVisible(false);
     }
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        this.add(startButton);
+        startButton.setVisible(true);
+        startButton.setEnabled(true);
     }
 
     public void playPanel(Graphics g){
@@ -85,6 +133,8 @@ class UOUOPanel extends JPanel{
         File file;
         Cpu = model.getUOUOs();
         figures = model.getFigures();
+        score_num_Label.setText(player.getPoint() + "");
+        hpLabel.setText(player.getHP() + "");
         for(Cpu cpu : Cpu){
             try{
                 file = new File(figures.get(cpu.getFig()));
@@ -97,18 +147,13 @@ class UOUOPanel extends JPanel{
                     //g2d.drawImage(image,100,100,100+w,100+h,w,0,0,h,this);// drawImage(image,画像を置く左上と右下座標引数4つ,描画する左上と右下相対座標引数4つ,this) 左右反転
                     g2d.drawImage(image,x,y,w,h,this);// drawImage(image,縮小した時の左上と右下座標引数4つ,this) 通常
                 }else if (cpu.getDirection() == 1){
-                    //左右反転
-                    AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
-                    at.translate(-w,0);
-                    AffineTransformOp atOp = new AffineTransformOp(at,null);
-                    g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
+                    g2d.drawImage(image,x+w,y,-w,h,this);
                 }
             }catch(IOException e){
                 System.out.println("Character image file is not found.");
                 e.printStackTrace();
             }
         }
-        Player player = model.getPlayer();
         try{
             file = new File(figures.get(0));
             BufferedImage image = ImageIO.read(file);
@@ -119,25 +164,22 @@ class UOUOPanel extends JPanel{
             if(player.getDirection() == -1){
                 g2d.drawImage(image,x,y,w,h,this);// drawImage(image,縮小した時の左上と右下座標引数4つ,this) 通常
             }else if (player.getDirection() == 1){
-                //左右反転
-                AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
-                at.translate(-2*w,0);
-                AffineTransformOp atOp = new AffineTransformOp(at,null);
-                g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
+                g2d.drawImage(image,x+w,y,-w,h,this);
             }
         }catch(IOException e){
             System.out.println("Player image file is not found.");
             e.printStackTrace();
         }
+        score_num_Label.setVisible(true);
+        hpLabel.setVisible(true);
     }
 
     public void resultPanel(Graphics g){                    //result画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        this.add(replayButton);
-        JLabel label = new JLabel("スコア");
-        label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        label.setBounds(330,100,400,140);    //ボタン位置指定 真ん中
-        this.add(label);
+        scorelabel.setVisible(true);
+        resultscoreLabel.setVisible(true);
+        replayButton.setVisible(true);
+        replayButton.setEnabled(true);
     }
 
     public void setflag(int flag){
