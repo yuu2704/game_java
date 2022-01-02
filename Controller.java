@@ -58,7 +58,7 @@ class AllController implements ActionListener {
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
-                model.initPlayer(500,500,200,100,50,-100,1);
+                model.initPlayer(500,500,200,100,50,100,1);
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
@@ -303,7 +303,7 @@ class HardCPUController extends CPUController{
             if(u.getDirection()==-1&&u.getX()<-200||u.getDirection()==1&&u.getX()>1200){
                 model.destroyCPU(i);
                 model.createCpu();
-            }else if(u.getY()<0||u.getY()>1000){
+            }else if(u.getY()<0||u.getY()>1200){
                 model.destroyCPU(i);
                 model.createCpu();
             }
