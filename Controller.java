@@ -26,6 +26,7 @@ class AllController implements ActionListener {
         //初期化はモデル
         start=view.getPanel().getStartButton();
         replay=view.getPanel().getReplayButton();
+        replay.setVisible(false);
         replay.setEnabled(false);
         start.addActionListener(this);
         replay.addActionListener(this);
@@ -33,17 +34,7 @@ class AllController implements ActionListener {
         //loop=0;
         timer.start();
     }
-    public void runtime() {
-        long total = Runtime.getRuntime().totalMemory();
-        long free = Runtime.getRuntime().freeMemory();
-        long used = total - free;
-        long max = Runtime.getRuntime().maxMemory();
-        System.out.println("total => " + total / 1024 + "KB");
-        System.out.println("free  => " + free / 1024 + "KB");
-        System.out.println("used  => " + used / 1024 + "KB");
-        System.out.println("max   => " + max / 1024 + "KB");
-        System.out.println("--------------------------------------------------");
-    }
+
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
             if(model.getScene()==1){
@@ -54,9 +45,9 @@ class AllController implements ActionListener {
                 }*/
                 view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
+                    replay.setVisible(true);
                     replay.setEnabled(true);
                     model.clearCPU();
-                    System.out.println(model.getUOUOs().size());
                 }
             }
             //runtime();
@@ -69,7 +60,6 @@ class AllController implements ActionListener {
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
-                System.out.println(model.getNum());
                 if(cpu==null){
                     cpu=new CPUController(model);
                     //cpu=new HardCPUCOntroller(model);
@@ -79,6 +69,8 @@ class AllController implements ActionListener {
                 }
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
+                start.setVisible(false);
+                replay.setVisible(false);
                 start.setEnabled(false);
                 replay.setEnabled(false);
                 //view.repaint();
@@ -209,8 +201,22 @@ class PlayerController implements KeyListener {
         if(move[0]!=0){
             player.setDirection(move[0]);
         }
-        player.setX(player.getX()+move[0]*player.getSpeed());
-        player.setY(player.getY()+move[1]*player.getSpeed());
+        double x=player.getX()+move[0]*player.getSpeed();
+        double y=player.getY()+move[1]*player.getSpeed();
+        if(x<0){
+            player.setX(0.0);
+        }else if(x>1000){
+            player.setX(1000.0);
+        }else{
+            player.setX(player.getX()+move[0]*player.getSpeed());
+        }
+        if(y<0){
+            player.setX(0.0);
+        }else if(y>1000){
+            player.setX(1000.0);
+        }else{
+            player.setY(player.getY()+move[1]*player.getSpeed());
+        }
     }
 
     public void init(){
