@@ -200,6 +200,8 @@ class UOUOPanel extends JPanel{
         resultscoreLabel.setVisible(true);
         replayButton.setVisible(true);
         replayButton.setEnabled(true);
+
+        resultscoreLabel.setText(player.getPoint() + "");
     }
 
     public void setflag(int flag){
