@@ -99,7 +99,7 @@ class UOUOPanel extends JPanel{
                 }else if (cpu.getDirection() == 1){
                     //左右反転
                     AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
-                    at.translate(-w,0);
+                    at.translate(-2*w,0);
                     AffineTransformOp atOp = new AffineTransformOp(at,null);
                     g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
                 }
@@ -121,7 +121,7 @@ class UOUOPanel extends JPanel{
             }else if (player.getDirection() == 1){
                 //左右反転
                 AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
-                at.translate(-w,0);
+                at.translate(-2*w,0);
                 AffineTransformOp atOp = new AffineTransformOp(at,null);
                 g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
             }
