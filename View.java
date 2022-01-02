@@ -30,8 +30,36 @@ class UOUOPanel extends JPanel{
             System.out.println("background image file is not found.");
             e.printStackTrace();
         }
-        flag = 0;
         this.setLayout(null);
+        Image startbuttonicon;
+        try{
+            startbuttonicon = ImageIO.read(new File("./start_bottun.png"));
+            startbuttonicon = startbuttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
+            startButton = new JButton(new ImageIcon(startbuttonicon));
+            startButton.setContentAreaFilled(false);   //ボタン透過
+            startButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
+            startButton.setBorderPainted(false);       //境界線消し
+            startButton.setFocusPainted(false);        //謎
+            startButton.setBounds(350,400,280,140);    //ボタン位置指定 真ん中
+        }catch(IOException e){
+            System.out.println("button image file is not found.");
+            e.printStackTrace();
+        }
+        Image replaybuttonicon;
+        try{
+            replaybuttonicon = ImageIO.read(new File("./replay_button.png"));
+            replaybuttonicon = replaybuttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
+            replayButton = new JButton(new ImageIcon(replaybuttonicon));
+            replayButton.setContentAreaFilled(false);   //ボタン透過
+            replayButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
+            replayButton.setBorderPainted(false);       //境界線消し
+            replayButton.setFocusPainted(false);        //謎
+            replayButton.setBounds(350,500,280,140);    //ボタン位置指定 真ん中
+        }catch(IOException e){
+            System.out.println("button image file is not found.");
+            e.printStackTrace();
+        }
+        flag = 0;
         repaint();
     }
 
@@ -48,21 +76,7 @@ class UOUOPanel extends JPanel{
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        Image buttonicon;
-        try{
-            buttonicon = ImageIO.read(new File("./start_bottun.png"));
-            buttonicon = buttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
-            startButton = new JButton(new ImageIcon(buttonicon));
-            startButton.setContentAreaFilled(false);   //ボタン透過
-            startButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
-            startButton.setBorderPainted(false);       //境界線消し
-            startButton.setFocusPainted(false);        //謎
-            startButton.setBounds(350,400,280,140);    //ボタン位置指定 真ん中
-            this.add(startButton);                     //ボタン表示
-        }catch(IOException e){
-            System.out.println("button image file is not found.");
-            e.printStackTrace();
-        }
+        this.add(startButton);
     }
 
     public void playPanel(Graphics g){
@@ -119,21 +133,11 @@ class UOUOPanel extends JPanel{
 
     public void resultPanel(Graphics g){                    //result画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        Image buttonicon;
-        try{
-            buttonicon = ImageIO.read(new File("./replay_button.png"));
-            buttonicon = buttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
-            replayButton = new JButton(new ImageIcon(buttonicon));
-            replayButton.setContentAreaFilled(false);   //ボタン透過
-            replayButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
-            replayButton.setBorderPainted(false);       //境界線消し
-            replayButton.setFocusPainted(false);        //謎
-            replayButton.setBounds(350,500,280,140);    //ボタン位置指定 真ん中
-            this.add(replayButton);                     //ボタン表示
-        }catch(IOException e){
-            System.out.println("button image file is not found.");
-            e.printStackTrace();
-        }
+        this.add(replayButton);
+        JLabel label = new JLabel("スコア");
+        label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
+        label.setBounds(330,100,400,140);    //ボタン位置指定 真ん中
+        this.add(label);
     }
 
     public void setflag(int flag){
