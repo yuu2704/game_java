@@ -97,6 +97,9 @@ class Model extends Observable {
     public int getScene(){
         return gameScene;
     }
+    public int getNum(){
+        return cpuNum;
+    }
 
     // cpuCreator
     public void createCpu(){
