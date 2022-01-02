@@ -103,7 +103,7 @@ class CPUController{
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
             Cpu u=model.getUOUOs().get(i);
-            if(u.getDirection()==-1&&u.getX()<-50||u.getDirection()==1&&u.getX()>1050){
+            if(u.getDirection()==-1&&u.getX()<-200||u.getDirection()==1&&u.getX()>1200){
                 model.destroyCPU(i);
                 model.createCpu();
             }
@@ -212,14 +212,14 @@ class PlayerController implements KeyListener {
         }else if(x>800){
             player.setX(800.0);
         }else{
-            player.setX(player.getX()+move[0]*player.getSpeed());
+            player.setX(x);
         }
         if(y<0){
             player.setY(0.0);
         }else if(y>900){
             player.setY(900.0);
         }else{
-            player.setY(player.getY()+move[1]*player.getSpeed());
+            player.setY(y);
         }
     }
 
@@ -298,7 +298,7 @@ class HardCPUController extends CPUController{
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
             Cpu u=model.getUOUOs().get(i);
-            if(u.getDirection()==-1&&u.getX()<0||u.getDirection()==1&&u.getX()>1000){
+            if(u.getDirection()==-1&&u.getX()<-200||u.getDirection()==1&&u.getX()>1200){
                 model.destroyCPU(i);
                 model.createCpu();
             }else if(u.getY()<0||u.getY()>1000){
