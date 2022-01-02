@@ -12,13 +12,16 @@ class Main{
 
 class AllController implements ActionListener {
     protected Model model;
-    protected CPUController cpu;
+    //protected CPUController cpu;
+    //hard用
+    protected HardCPUController cpu;
+    //-----
     protected PlayerController player;
     protected View view;
     private javax.swing.Timer timer;
     protected JButton start;
     protected JButton replay;
-    //int loop;
+    int loop;
     public AllController(Model model, View view) {
         this.model = model;
         this.view = view;
@@ -29,7 +32,9 @@ class AllController implements ActionListener {
         start.addActionListener(this);
         replay.addActionListener(this);
         timer = new javax.swing.Timer(40, this);
-        //loop=0;
+        //hard用
+        loop=0;
+        //-----
         timer.start();
     }
 
@@ -37,10 +42,12 @@ class AllController implements ActionListener {
         if(e.getSource()==timer){
             if(model.getScene()==1){
                 player.action();
-                cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
-                /*if(loop>=cpu.getCount()){
-                    loop==0;
-                }*/
+                //hard用
+                cpu.updateCPU(loop++); //同期しないがいいかも?
+                if(loop>=cpu.getCount()){
+                    loop=0;
+                }
+                //-----
                 view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
                     model.clearCPU();
@@ -57,10 +64,15 @@ class AllController implements ActionListener {
                     model.createCpu();
                 }
                 if(cpu==null){
-                    cpu=new CPUController(model);
-                    //cpu=new HardCPUCOntroller(model);
+                    //cpu=new CPUController(model);
+                    //hard用
+                    cpu=new HardCPUController(model);
+                    //-----
                     player=new PlayerController(model,view);
                 }else{
+                    //hard用
+                    loop=0;
+                    //-----
                     player.init();
                 }
                 model.setScene(1);
@@ -203,9 +215,9 @@ class PlayerController implements KeyListener {
             player.setX(player.getX()+move[0]*player.getSpeed());
         }
         if(y<0){
-            player.setX(0.0);
+            player.setY(0.0);
         }else if(y>1000){
-            player.setX(1000.0);
+            player.setY(1000.0);
         }else{
             player.setY(player.getY()+move[1]*player.getSpeed());
         }
@@ -267,9 +279,7 @@ class HardCPUController extends CPUController{
     public HardCPUController(Model m){
         super(m);
         count = 0;
-        for(int i=0;i<model.getUOUOs().size();i++){
-            cpuyspeed.add(0.0);
-        }
+        cpuyspeed=new ArrayList<Double>();
     }
 
     public void updateCPU(int loop){
@@ -284,7 +294,7 @@ class HardCPUController extends CPUController{
         for(int i=0; i<model.getUOUOs().size(); i++){
             //System.out.println(model.getUOUOs().get(i).getX());
             model.getUOUOs().get(i).setX(model.getUOUOs().get(i).getX()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection()*Math.random());
-            model.getUOUOs().get(i).setY(model.getUOUOs().get(i).getY()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection());
+            model.getUOUOs().get(i).setY(model.getUOUOs().get(i).getY()+model.getUOUOs().get(i).getSpeed()*cpuyspeed.get(i));
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
             Cpu u=model.getUOUOs().get(i);
@@ -296,13 +306,18 @@ class HardCPUController extends CPUController{
                 model.createCpu();
             }
             //ヒットフラグ立ってたら消す。
-            if(u.isCollision()==1){
+            if(model.checkCollision(i)==1){
                 Player player=model.getPlayer();
                 player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
                 model.destroyCPU(i);
                 model.createCpu();
+            }else if(model.checkCollision(i)==2){
+                model.getPlayer().setHP(model.getPlayer().getHP()-1);
+                //System.out.println(model.getPlayer().getHP());
+                if(model.getPlayer().getHP()<=0){
+                    model.setScene(2);
+                }
             }
-            //消した時に追加
         }
     }
     public int getCount(){
