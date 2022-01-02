@@ -38,24 +38,27 @@ class AllController implements ActionListener {
                     loop==0;
                 }*/
             }
-            view.repaint(); //fps25で更新
+            //view.repaint(); //fps25で更新
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
-            if(model.getScene()==2){
+            if(model.getScene()!=1){
                 model.initPlayer(500,500,20,10,5,0,1); //常に中心からでいいので勝手にやってほしい
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
+                //view.repaint();
             }else{
                 model.setScene(model.getScene()+1);
                 view.getPanel().setflag(model.getScene());
+                //view.repaint();
             }
             if(model.getScene()==2){
-                timer.stop();
+                //timer.stop();
             }
         }
+        view.repaint();
     }
 }
 
