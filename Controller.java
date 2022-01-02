@@ -46,11 +46,11 @@ class AllController implements ActionListener {
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
-                model.setFlag(1);
-                view.setFlag(model.getScene());
+                model.setScene(1);
+                view.setflag(model.getScene());
             }else{
-                model.setFlag(model.getScene()++);
-                view.setflag(model.getFlag);
+                model.setScene(model.getScene()++);
+                view.setflag(model.getScene());
             }
             if(model.getScene()==2){
                 timer.stop();
