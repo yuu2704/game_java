@@ -199,6 +199,8 @@ class PlayerController implements KeyListener {
             break;
         }
     }
+
+
     public void action() {
         Player player=model.getPlayer();
         if(move[0]!=0){
@@ -206,7 +208,6 @@ class PlayerController implements KeyListener {
         }
         double x=player.getX()+move[0]*player.getSpeed();
         double y=player.getY()+move[1]*player.getSpeed();
-        System.out.println(x+":"+y);
         if(x<0){
             player.setX(0.0);
         }else if(x>800){
@@ -221,6 +222,7 @@ class PlayerController implements KeyListener {
         }else{
             player.setY(y);
         }
+        System.out.println(player.getX()+":"+player.getY());
     }
 
     public void init(){
