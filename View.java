@@ -99,7 +99,7 @@ class UOUOPanel extends JPanel{
                 }else if (cpu.getDirection() == 1){
                     //左右反転
                     AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
-                    at.translate(-2*w,0);
+                    at.translate(-w,0);
                     AffineTransformOp atOp = new AffineTransformOp(at,null);
                     g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
                 }
@@ -155,11 +155,11 @@ class UOUOPanel extends JPanel{
     }
 }
 
-class UOUOFrame extends JFrame{          //show window
+class View extends JFrame{          //show window
     UOUOPanel panel;
     private int frame_height = 1000;
     private int frame_width = 1000;
-    public UOUOFrame(Model model){
+    public View(Model model){
         this.setTitle("UOUO! Dream Fish!!");
         this.setSize(frame_height, frame_width);
         panel = new UOUOPanel(model,frame_height,frame_width);
