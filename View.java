@@ -32,7 +32,7 @@ class UOUOPanel extends JPanel{
         this.setLayout(null);
         flag = 0;
         createLabelandButton();
-        allSetFalse();
+        allSetTF();
         repaint();
     }
 
@@ -109,40 +109,44 @@ class UOUOPanel extends JPanel{
         this.add(replayButton);
     }
 
-    public void allSetFalse(){
-        startButton.setEnabled(false); 
-        startButton.setVisible(false);
-        score_num_Label.setVisible(false);
-        hpLabel.setVisible(false);
-        scorelabel.setVisible(false);
-        resultscoreLabel.setVisible(false);
-        replayButton.setEnabled(false);
-        replayButton.setVisible(false);
+    public void allSetTF(){
+        if(flag == 0){
+            hpLabel.setVisible(false);
+            scorelabel.setVisible(false);
+            resultscoreLabel.setVisible(false);
+            replayButton.setEnabled(false);
+            replayButton.setVisible(false);
+
+            startButton.setEnabled(true);
+            startButton.setVisible(true);
+        }else if(flag == 1){
+            startButton.setEnabled(false); 
+            startButton.setVisible(false);
+            scorelabel.setVisible(false);
+            resultscoreLabel.setVisible(false);
+            replayButton.setEnabled(false);
+            replayButton.setVisible(false);
+
+            score_num_Label.setVisible(true);
+            hpLabel.setVisible(true);
+        }else if(flag == 2){
+            startButton.setEnabled(false); 
+            startButton.setVisible(false);
+            score_num_Label.setVisible(false);
+            hpLabel.setVisible(false);
+
+            scorelabel.setVisible(true);
+            resultscoreLabel.setVisible(true);
+            replayButton.setVisible(true);
+            replayButton.setEnabled(true);
+        }
     }
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);score_num_Label.setVisible(false);
-        hpLabel.setVisible(false);
-        scorelabel.setVisible(false);
-        resultscoreLabel.setVisible(false);
-        replayButton.setEnabled(false);
-        replayButton.setVisible(false);
-
-        startButton.setEnabled(true);
-        startButton.setVisible(true);
     }
 
     public void playPanel(Graphics g){
-        startButton.setEnabled(false); 
-        startButton.setVisible(false);
-        scorelabel.setVisible(false);
-        resultscoreLabel.setVisible(false);
-        replayButton.setEnabled(false);
-        replayButton.setVisible(false);
-
-        score_num_Label.setVisible(true);
-        hpLabel.setVisible(true);
-
         player = model.getPlayer();
 
         g.drawImage(backgroundImage,0,0,frame_width,frame_height,this);
@@ -191,21 +195,12 @@ class UOUOPanel extends JPanel{
 
     public void resultPanel(Graphics g){                    //result画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        startButton.setEnabled(false); 
-        startButton.setVisible(false);
-        score_num_Label.setVisible(false);
-        hpLabel.setVisible(false);
-
-        scorelabel.setVisible(true);
-        resultscoreLabel.setVisible(true);
-        replayButton.setVisible(true);
-        replayButton.setEnabled(true);
-
         resultscoreLabel.setText(player.getPoint() + "");
     }
 
     public void setflag(int flag){
         this.flag = flag;
+        allSetTF();
     }
 
 
