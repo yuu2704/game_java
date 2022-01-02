@@ -114,9 +114,9 @@ class Model extends Observable {
             x+=WIDTH+w;
         }else{
             d=1;
-            x-=w;
+            x-=WIDTH+w;
         }
-        f=(int)Math.random()+1;
+        f=(int)(Math.random()*3)+1;
         uouo = new Cpu(x,y,w,h,s,p,d,f);
         cpu.add(uouo);
         newUOUO = uouo;
