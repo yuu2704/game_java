@@ -6,7 +6,6 @@ class Main{
     public static void main(String argv[]) {
         Model model=new Model();
         UOUOFrame view=new UOUOFrame(model);
-        System.out.println("in");
         AllController controller =new AllController(model,view);
     }
 }
@@ -34,9 +33,21 @@ class AllController implements ActionListener {
         //loop=0;
         timer.start();
     }
+    public void runtime() {
+        long total = Runtime.getRuntime().totalMemory();
+        long free = Runtime.getRuntime().freeMemory();
+        long used = total - free;
+        long max = Runtime.getRuntime().maxMemory();
+        System.out.println("total => " + total / 1024 + "KB");
+        System.out.println("free  => " + free / 1024 + "KB");
+        System.out.println("used  => " + used / 1024 + "KB");
+        System.out.println("max   => " + max / 1024 + "KB");
+        System.out.println("--------------------------------------------------");
+    }
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
             if(model.getScene()==1){
+                player.action();
                 cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
                 /*if(loop>=cpu.getCount()){
                     loop==0;
@@ -44,20 +55,28 @@ class AllController implements ActionListener {
                 view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
                     replay.setEnabled(true);
+                    model.clearCPU();
+                    System.out.println(model.getUOUOs().size());
                 }
             }
+            //runtime();
             view.getPanel().repaint(); //fps25で更新
             this.view.setFocusable(true);
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
-                model.initPlayer(500,500,200,100,50,100,1);
+                model.initPlayer(500,500,200,100,50,-100,1);
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
-                cpu=new CPUController(model);
-                //cpu=new HardCPUCOntroller(model);
-                player=new PlayerController(model,view);
+                System.out.println(model.getNum());
+                if(cpu==null){
+                    cpu=new CPUController(model);
+                    //cpu=new HardCPUCOntroller(model);
+                    player=new PlayerController(model,view);
+                }else{
+                    player.init();
+                }
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
                 start.setEnabled(false);
@@ -72,7 +91,6 @@ class AllController implements ActionListener {
                 //timer.stop();
             }*/
         }
-
     }
 }
 
@@ -100,8 +118,12 @@ class CPUController{
                 player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
                 model.destroyCPU(i);
                 model.createCpu();
-            }else if(model.checkCollision(i)!=0){
-                model.setScene(2);
+            }else if(model.checkCollision(i)==2){
+                model.getPlayer().setHP(model.getPlayer().getHP()-1);
+                //System.out.println(model.getPlayer().getHP());
+                if(model.getPlayer().getHP()<=0){
+                    model.setScene(2);
+                }
             }
             //消した時に追加
         }
@@ -109,20 +131,17 @@ class CPUController{
 }
 
 
-class PlayerController implements KeyListener, ActionListener  {
-    protected Player player;
+class PlayerController implements KeyListener {
+    protected Model model;
     protected UOUOFrame view;
     protected int[] move;
-    protected javax.swing.Timer timer;
     public PlayerController(Model m, UOUOFrame view) {
         move=new int[]{0,0};
-        player=m.getPlayer();
+        model=m;
         this.view=view;
         this.view.setFocusable(true);
         //System.out.println(view.isFocusable());
         this.view.addKeyListener(this);
-        timer = new javax.swing.Timer(40, this);
-        timer.start();
     }
     public void keyPressed(KeyEvent e){
         // カーソルキーのイベントはkeyPressedで取得します．
@@ -185,12 +204,20 @@ class PlayerController implements KeyListener, ActionListener  {
             break;
         }
     }
-    public void actionPerformed(ActionEvent e) {
+    public void action() {
+        Player player=model.getPlayer();
         if(move[0]!=0){
             player.setDirection(move[0]);
         }
         player.setX(player.getX()+move[0]*player.getSpeed());
         player.setY(player.getY()+move[1]*player.getSpeed());
+    }
+
+    public void init(){
+        move[0]=0;
+        move[1]=0;
+        this.view.setFocusable(true);
+        //System.out.println(view.isFocusable());
     }
 }
 
