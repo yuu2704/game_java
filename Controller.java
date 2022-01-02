@@ -26,8 +26,6 @@ class AllController implements ActionListener {
         //初期化はモデル
         start=view.getPanel().getStartButton();
         replay=view.getPanel().getReplayButton();
-        replay.setVisible(false);
-        replay.setEnabled(false);
         start.addActionListener(this);
         replay.addActionListener(this);
         timer = new javax.swing.Timer(40, this);
@@ -45,8 +43,6 @@ class AllController implements ActionListener {
                 }*/
                 view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
-                    replay.setVisible(true);
-                    replay.setEnabled(true);
                     model.clearCPU();
                 }
             }
@@ -69,10 +65,6 @@ class AllController implements ActionListener {
                 }
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
-                start.setVisible(false);
-                replay.setVisible(false);
-                start.setEnabled(false);
-                replay.setEnabled(false);
                 //view.repaint();
             }/*else{
                 model.setScene(model.getScene()+1);
