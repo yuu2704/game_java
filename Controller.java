@@ -32,7 +32,7 @@ class AllController implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
-            if(model.getScene==1){
+            if(model.getScene()==1){
                 cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
                 /*if(loop>=cpu.getCount()){
                     loop==0;
@@ -47,10 +47,10 @@ class AllController implements ActionListener {
                     model.createCpu();
                 }
                 model.setScene(1);
-                view.setflag(model.getScene());
+                view.getPanel().setflag(model.getScene());
             }else{
-                model.setScene(model.getScene()++);
-                view.setflag(model.getScene());
+                model.setScene(model.getScene()+1);
+                view.getPanel().setflag(model.getScene());
             }
             if(model.getScene()==2){
                 timer.stop();
