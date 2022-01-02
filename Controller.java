@@ -12,9 +12,9 @@ class Main{
 
 class AllController implements ActionListener {
     protected Model model;
-    //protected CPUController cpu;
+    protected CPUController cpu;
     //hard用
-    protected HardCPUController cpu;
+    //protected HardCPUController cpu;
     //-----
     protected PlayerController player;
     protected View view;
@@ -25,7 +25,6 @@ class AllController implements ActionListener {
     public AllController(Model model, View view) {
         this.model = model;
         this.view = view;
-        //model.createUOUOplayer(500.0,500.0,100.0,100.0,20.0,0,1);
         //初期化はモデル
         start=view.getPanel().getStartButton();
         replay=view.getPanel().getReplayButton();
@@ -33,7 +32,7 @@ class AllController implements ActionListener {
         replay.addActionListener(this);
         timer = new javax.swing.Timer(40, this);
         //hard用
-        loop=0;
+        //loop=0;
         //-----
         timer.start();
     }
@@ -43,10 +42,10 @@ class AllController implements ActionListener {
             if(model.getScene()==1){
                 player.action();
                 //hard用
-                cpu.updateCPU(loop++); //同期しないがいいかも?
-                if(loop>=cpu.getCount()){
-                    loop=0;
-                }
+                cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
+                //if(loop>=cpu.getCount()){
+                //    loop=0;
+                //}
                 //-----
                 view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
@@ -64,14 +63,14 @@ class AllController implements ActionListener {
                     model.createCpu();
                 }
                 if(cpu==null){
-                    //cpu=new CPUController(model);
+                    cpu=new CPUController(model);
                     //hard用
-                    cpu=new HardCPUController(model);
+                    //cpu=new HardCPUController(model);
                     //-----
                     player=new PlayerController(model,view);
                 }else{
                     //hard用
-                    loop=0;
+                    //loop=0;
                     //-----
                     player.init();
                 }
