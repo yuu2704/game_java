@@ -93,7 +93,7 @@ class UOUOPanel extends JPanel{
                 int y = (int)cpu.getY();
                 int w = (int)cpu.getWidth();
                 int h = (int)cpu.getHeight();
-                if(cpu.getDirection() == 0){
+                if(cpu.getDirection() == -1){
                     //g2d.drawImage(image,100,100,100+w,100+h,w,0,0,h,this);// drawImage(image,画像を置く左上と右下座標引数4つ,描画する左上と右下相対座標引数4つ,this) 左右反転
                     g2d.drawImage(image,x,y,w,h,this);// drawImage(image,縮小した時の左上と右下座標引数4つ,this) 通常
                 }else if (cpu.getDirection() == 1){
@@ -101,7 +101,7 @@ class UOUOPanel extends JPanel{
                     AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
                     at.translate(-w,0);
                     AffineTransformOp atOp = new AffineTransformOp(at,null);
-                    g2d.drawImage(atOp.filter(image,null), x, y, w, h,this);
+                    g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
                 }
             }catch(IOException e){
                 System.out.println("Character image file is not found.");
@@ -116,14 +116,14 @@ class UOUOPanel extends JPanel{
             int y = (int)player.getY();
             int w = (int)player.getWidth();
             int h = (int)player.getHeight();
-            if(player.getDirection() == 0){
+            if(player.getDirection() == -1){
                 g2d.drawImage(image,x,y,w,h,this);// drawImage(image,縮小した時の左上と右下座標引数4つ,this) 通常
             }else if (player.getDirection() == 1){
                 //左右反転
                 AffineTransform at = AffineTransform.getScaleInstance(-1d,1d);
                 at.translate(-w,0);
                 AffineTransformOp atOp = new AffineTransformOp(at,null);
-                g2d.drawImage(atOp.filter(image,null), x, y, w, h,this);
+                g2d.drawImage(atOp.filter(image,null),x,y,w,h,this);
             }
         }catch(IOException e){
             System.out.println("Player image file is not found.");
