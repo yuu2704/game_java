@@ -51,7 +51,7 @@ class AllController implements ActionListener {
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
-                model.initPlayer(500,500,200,100,1,0,1);
+                model.initPlayer(500,500,200,100,50,0,1);
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
@@ -132,22 +132,22 @@ class PlayerController implements KeyListener, ActionListener  {
             case KeyEvent.VK_LEFT: // A or ←
             move[0]=-1;
             //model.setX(model.getX()-model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_RIGHT: // D or →
             move[0]=1;
             //model.setX(model.getX()+model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_UP: // W or ↑
             move[1]=-1;
             //model.setY(model.getY()-model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_DOWN: // S
             move[1]=1;
             //model.setY(model.getY()+model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
         }
     }
@@ -160,32 +160,35 @@ class PlayerController implements KeyListener, ActionListener  {
                 move[0]=0;
             }
             //model.setX(model.getX()-model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_RIGHT: // D or →
             if(move[0]==1){
                 move[0]=0;
             }
             //model.setX(model.getX()+model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_UP: // W or ↑
             if(move[1]==-1){
                 move[1]=0;
             }
             //model.setY(model.getY()-model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
             case KeyEvent.VK_DOWN: // S
             if(move[1]==1){
                 move[1]=0;
             }
             //model.setY(model.getY()+model.getSpeed());
-            System.out.println("aaa");
+            //System.out.println("aaa");
             break;
         }
     }
     public void actionPerformed(ActionEvent e) {
+        if(move[0]!=0){
+            player.setDirection(move[0]);
+        }
         player.setX(player.getX()+move[0]*player.getSpeed());
         player.setY(player.getY()+move[1]*player.getSpeed());
     }
