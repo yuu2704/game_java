@@ -13,8 +13,8 @@ class Main{
 
 class AllController implements ActionListener {
     protected Model model;
-    protected UOUOCPUController cpu;
-    protected UOUOPlayerController player;
+    protected CPUController cpu;
+    protected PlayerController player;
     protected UOUOFrame view;
     private javax.swing.Timer timer;
     //int loop;
@@ -23,16 +23,16 @@ class AllController implements ActionListener {
         this.view = view;
         //model.createUOUOplayer(500.0,500.0,100.0,100.0,20.0,0,1);
         //初期化はモデル
-        cpu=new UOUOCPUController(model);
+        cpu=new CPUController(model);
         //cpu=new HardCPUCOntroller(model);
-        player=new UOUOPlayerController(model,view);
+        player=new PlayerController(model,view);
         timer = new javax.swing.Timer(40, this);
         //loop=0;
         timer.start();
     }
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
-            if(model.getFlag==1){
+            if(model.getScene==1){
                 cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
                 /*if(loop>=cpu.getCount()){
                     loop==0;
@@ -41,16 +41,18 @@ class AllController implements ActionListener {
             view.repaint(); //fps25で更新
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
-            if(model.getFlag==2){
-                model.initPlayer(); //常に中心からでいいので勝手にやってほしい
-                model.initCPU(); //ほしい
+            if(model.getScene()==2){
+                model.initPlayer(500,500,20,10,5,0,1); //常に中心からでいいので勝手にやってほしい
+                for(int i=0;i<10;i++){
+                    model.createCpu();
+                }
                 model.setFlag(1);
-                view.setFlag(model.getFlag);
+                view.setFlag(model.getScene());
             }else{
-                model.setFlag(model.getFlag++);
+                model.setFlag(model.getScene()++);
                 view.setflag(model.getFlag);
             }
-            if(model.getFlag==2){
+            if(model.getScene()==2){
                 timer.stop();
             }
         }
@@ -58,10 +60,10 @@ class AllController implements ActionListener {
 }
 
 
-class UOUOCPUController{
+class CPUController{
     protected Model model;
     //protected ArrayList<UOUOcpu> cpuList;
-    public UOUOCPUController(Model m) {
+    public CPUController(Model m) {
         model=m;
     }
     public void updateCPU(){
@@ -88,10 +90,10 @@ class UOUOCPUController{
 }
 
 
-class UOUOPlayerController implements KeyListener {
+class PlayerController implements KeyListener {
     protected Player model;
     protected UOUOFrame view;
-    public UOUOPlayerController(Model m, UOUOFrame view) {
+    public PlayerController(Model m, UOUOFrame view) {
         model=m.getPlayer();
         this.view=view;
         this.view.setFocusable(true);
@@ -167,7 +169,7 @@ class UOUOPlayerController implements KeyListener {
 //getFlag,setFlag(場面判断用)ほしい
 //initCPU,initPlayerで初期設定を出来れば勝手にやってほしい。厳しければこちれでも出来るけど、拡張性が低くなりそう
 
-class HardCPUController extends UOUOCPUController{
+class HardCPUController extends CPUController{
     protected ArrayList<Double> cpuyspeed;
     int count;
     public HardCPUController(Model m){
