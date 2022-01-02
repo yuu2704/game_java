@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
@@ -7,6 +6,7 @@ class Main{
     public static void main(String argv[]) {
         Model model=new Model();
         UOUOFrame view=new UOUOFrame(model);
+        System.out.println("in");
         AllController controller =new AllController(model,view);
     }
 }
@@ -18,13 +18,18 @@ class AllController implements ActionListener {
     protected UOUOFrame view;
     private javax.swing.Timer timer;
     protected JButton start;
-    protected JButton result;
+    protected JButton replay;
     //int loop;
     public AllController(Model model, UOUOFrame view) {
         this.model = model;
         this.view = view;
         //model.createUOUOplayer(500.0,500.0,100.0,100.0,20.0,0,1);
         //初期化はモデル
+        start=view.getPanel().getStartButton();
+        replay=view.getPanel().getReplayButton();
+        replay.setEnabled(false);
+        start.addActionListener(this);
+        replay.addActionListener(this);
         cpu=new CPUController(model);
         //cpu=new HardCPUCOntroller(model);
         player=new PlayerController(model,view);
@@ -40,8 +45,11 @@ class AllController implements ActionListener {
                     loop==0;
                 }*/
                 view.getPanel().setflag(model.getScene());
+                if(model.getScene()==2){
+                    replay.setEnabled(true);
+                }
             }
-            view.repaint(); //fps25で更新
+            view.getPanel().repaint(); //fps25で更新
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
@@ -51,6 +59,8 @@ class AllController implements ActionListener {
                 }
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
+                start.setEnabled(false);
+                replay.setEnabled(false);
                 //view.repaint();
             }/*else{
                 model.setScene(model.getScene()+1);
