@@ -26,7 +26,7 @@ class Cpu extends UOUO{
     public void setSpeed(double s){ speed=s; }
     public void setPoint(int p){ point=p; }
     public void setDirection(int d){ direction=d; }
-    public void initHitFlag(){ hitFlag=1; }
+    public void initHitFlag(){ hitFlag=0; }
 
     public void setLocation(double x,double y){ this.x=x; this.y=y; }
     public void setSize(double w,double h){ width=w; height=h; }
@@ -44,8 +44,18 @@ class Cpu extends UOUO{
 }
 
 class Player extends Cpu{
+    protected int hitPoint=3;
     public Player(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
+    }
+
+    // setter
+    public void setHP(int hp){
+        hitPoint=hp;
+    }
+    //getter
+    public int getHP(){
+        return hitPoint;
     }
 }
 
@@ -95,10 +105,10 @@ class Model extends Observable {
         int d,p,f,WIDTH=1000,HIGHT=1000;
         x=Math.random()*WIDTH/2;
         y=Math.random()*HIGHT*0.8+HIGHT*0.1;
-        w=Math.random()*100+50;
-        h=Math.random()*70*30;
+        w=Math.random()*100+50; // 50~150
+        h=Math.random()*70+30;  // 30~100
         s=Math.random()*20+10;
-        p=(int)w*(int)h;
+        p=(int)w*(int)h/1500;
         if(Math.random()<0.5){
             d=-1;
             x+=WIDTH+w;
@@ -128,10 +138,14 @@ class Model extends Observable {
     }
 
     // CollisionChecker
-    public int checkCollision(int idx){
+    public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
         if(player.x<cpu.get(idx).x && player.x+player.width>cpu.get(idx).x+cpu.get(idx).width){
             if(player.y<cpu.get(idx).y && player.y+player.height>cpu.get(idx).y+cpu.get(idx).height){
-                return 1;
+                if(player.point+2<cpu.get(idx).point){
+                    return 2;
+                }else{
+                    return 1;
+                }
             }
         }
         return 0;
