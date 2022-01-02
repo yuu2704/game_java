@@ -65,7 +65,6 @@ class Model extends Observable {
     protected ArrayList<String> figures;
     protected Cpu newUOUO;
     protected Player player;
-    protected static int MAX_CPU=10;
     protected int cpuNum, gameScene=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
@@ -131,6 +130,12 @@ class Model extends Observable {
     public void destroyCPU(int idx){
         cpu.remove(idx);
         cpuNum--;
+    }
+    public void clearCPU(){
+        while(cpuNum>0){
+            cpu.remove(cpuNum-1);
+            cpuNum--;
+        }
     }
 
     // playerInitializer
