@@ -17,6 +17,8 @@ class AllController implements ActionListener {
     protected PlayerController player;
     protected UOUOFrame view;
     private javax.swing.Timer timer;
+    protected JButton start;
+    protected JButton result;
     //int loop;
     public AllController(Model model, UOUOFrame view) {
         this.model = model;
