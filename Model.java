@@ -61,9 +61,10 @@ class Model extends Observable {
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
         // pictures
-        figures.add("fish_houbou.png");
+        figures.add("fish_aji.png");
         figures.add("fish_sakana_piranha.png");
-        figures.add("uni_broccoli.png");
+        figures.add("fish_ookamiuo.png");
+        figures.add("taiyaki.png");
         newUOUO = null;
         cpuNum = 0;
     }
