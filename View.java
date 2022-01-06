@@ -5,14 +5,21 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.ProgressBarUI;
 import java.util.*;
 
+class BarUI extends ProgressBarUI {
+    public BarUI(int width, int height){
+
+    }
+}
 
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
     protected Model model;
     protected ArrayList<Cpu> Cpu;
-    Player player;
+    protected Player player;
+    protected int maxHP;
     protected ArrayList<String> figures;
     protected int frame_height;
     protected int frame_width;
@@ -24,6 +31,10 @@ class UOUOPanel extends JPanel{
     protected JLabel score_num_Label;
     protected JLabel hpLabel;
     protected JLabel resultscoreLabel;
+    protected JProgressBar hpbar;
+    protected JProgressBar timevar;
+
+    public UIManager ui;
 
     public UOUOPanel(Model model,int frame_height,int frame_width){
         this.model = model;
@@ -32,7 +43,7 @@ class UOUOPanel extends JPanel{
         this.setLayout(null);
         flag = 0;
         createLabelandButton();
-        allSetTF();
+        initScene();
         repaint();
     }
 
@@ -107,15 +118,28 @@ class UOUOPanel extends JPanel{
             e.printStackTrace();
         }
         this.add(replayButton);
+        //HPbar
+        hpbar = new JProgressBar();
+        hpbar.setForeground(Color.green);
+        hpbar.setBackground(Color.white);
+        hpbar.setStringPainted(true);
+        hpbar.setBorderPainted(true);
+        hpbar.setValue(100);
+        //hpbar.setUI(new BarUI(200,50));
+        hpbar.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
+        hpbar.setPreferredSize(new Dimension(400,140));
+        hpbar.setBounds(frame_width-400,frame_height-300,400,140);
+        this.add(hpbar);
     }
 
-    public void allSetTF(){
+    public void initScene(){
         if(flag == 0){
             hpLabel.setVisible(false);
             scorelabel.setVisible(false);
             resultscoreLabel.setVisible(false);
             replayButton.setEnabled(false);
             replayButton.setVisible(false);
+            hpbar.setVisible(false);
 
             startButton.setEnabled(true);
             startButton.setVisible(true);
@@ -128,12 +152,17 @@ class UOUOPanel extends JPanel{
             replayButton.setVisible(false);
 
             score_num_Label.setVisible(true);
-            hpLabel.setVisible(true);
+            //hpLabel.setVisible(true);
+            hpbar.setVisible(true);
+
+            player = model.getPlayer();
+            maxHP = player.getHP();
         }else if(flag == 2){
             startButton.setEnabled(false); 
             startButton.setVisible(false);
             score_num_Label.setVisible(false);
             hpLabel.setVisible(false);
+            hpbar.setVisible(false);
 
             scorelabel.setVisible(true);
             resultscoreLabel.setVisible(true);
@@ -147,7 +176,6 @@ class UOUOPanel extends JPanel{
     }
 
     public void playPanel(Graphics g){
-        player = model.getPlayer();
 
         g.drawImage(backgroundImage,0,0,frame_width,frame_height,this);
         Graphics2D g2d = (Graphics2D) g;
@@ -155,7 +183,8 @@ class UOUOPanel extends JPanel{
         Cpu = model.getUOUOs();
         figures = model.getFigures();
         score_num_Label.setText(player.getPoint() + "");
-        hpLabel.setText(player.getHP() + "");
+        //hpLabel.setText(player.getHP() + "");
+        hpbar.setValue(player.getHP());
         for(Cpu cpu : Cpu){
             try{
                 file = new File(figures.get(cpu.getFig()));
@@ -200,7 +229,7 @@ class UOUOPanel extends JPanel{
 
     public void setflag(int flag){
         this.flag = flag;
-        allSetTF();
+        initScene();
     }
 
 
