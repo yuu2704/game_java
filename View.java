@@ -86,8 +86,9 @@ class UOUOPanel extends JPanel{
         this.add(startButton);
         //途中スコア
         score_num_Label = new JLabel();
-        score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        score_num_Label.setBounds(0,frame_height-100,400,80);
+        score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,80));
+        score_num_Label.setHorizontalAlignment(JLabel.CENTER);
+        score_num_Label.setBounds(0,frame_height-100,200,80);
         this.add(score_num_Label);
         //HPbar
         hpbar = new JProgressBar();
@@ -97,7 +98,7 @@ class UOUOPanel extends JPanel{
         hpbar.setBorderPainted(true);
         hpbar.setValue(100);
         hpbar.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
-        hpbar.setBounds(frame_width-300,frame_height-100,200,40);
+        hpbar.setBounds(frame_width-300,frame_height-70,280,40);
         this.add(hpbar);
         //timebar
         timebar = new JProgressBar();
@@ -115,7 +116,8 @@ class UOUOPanel extends JPanel{
         //リザルトスコア
         resultscoreLabel = new JLabel();
         resultscoreLabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        resultscoreLabel.setBounds(330,300,400,140);    //ボタン位置指定 真ん中
+        resultscoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        resultscoreLabel.setBounds(frame_width,frame_height,400,140);
         this.add(resultscoreLabel);
         //リプレイボタン
         Image replaybuttonicon;
@@ -229,7 +231,7 @@ class UOUOPanel extends JPanel{
 
     public void resultPanel(Graphics g){                    //result画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        resultscoreLabel.setText(player.getPoint() + "");
+        resultscoreLabel.setText((int)player.getPoint() + "");
     }
 
     public void setflag(int flag){
@@ -256,10 +258,11 @@ class View extends JFrame{          //show window
         this.setTitle("UOUO! Dream Fish!!");
         frame_width = model.getFrameWidth();
         frame_height = model.getFrameHeight();
-        this.setSize(frame_width, frame_height);
+        this.getContentPane().setPreferredSize(new Dimension(frame_width, frame_height));
         panel = new UOUOPanel(model,frame_width,frame_height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(panel);
+        this.pack();
         this.setVisible(true);
     }
 
