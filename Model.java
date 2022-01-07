@@ -86,6 +86,9 @@ class Model {
     public void deleteSpeedY(int idx){
         speedY.remove(idx);
     }
+    public void clearSpeedY(){
+        speedY.clear();
+    }
     public void setTime(int t){
         time=t;
     }
@@ -175,10 +178,12 @@ class Model {
         cpuNum--;
     }
     public void clearCPU(){
-        while(cpuNum>0){
-            cpu.remove(cpuNum-1);
-            cpuNum--;
-        }
+        // while(cpuNum>0){
+        //     cpu.remove(cpuNum-1);
+        //     cpuNum--;
+        // }
+        cpu.clear();
+        cpuNum=0;
     }
 
     // playerInitializer
