@@ -15,6 +15,7 @@ class Cpu extends UOUO{
     public Cpu(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
+
     // setter
     public void setX(double x){ this.x=x; }
     public void setY(double y){ this.y=y; }
@@ -57,7 +58,6 @@ class Player extends Cpu{
 
 // Model
 class Model {
-//class Model extends Observable {
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
     protected ArrayList<String> sounds;
@@ -171,8 +171,6 @@ class Model {
         cpu.add(uouo);
         newUOUO = uouo;
         cpuNum++;
-        // setChanged();
-        // notifyObservers();
     }
     // cpuDestroyer
     public void destroyCPU(int idx){
@@ -180,10 +178,6 @@ class Model {
         cpuNum--;
     }
     public void clearCPU(){
-        // while(cpuNum>0){
-        //     cpu.remove(cpuNum-1);
-        //     cpuNum--;
-        // }
         cpu.clear();
         cpuNum=0;
     }
@@ -191,6 +185,10 @@ class Model {
     // playerInitializer
     public void initPlayer(){
         player = new Player(WIDTH/2,HEIGHT/2,60,40,15,0,1,0);
+    }
+    public void resizePlayer(){
+        player.width = player.width+player.width*player.point/1500;
+        player.height = player.height+player.height*player.point/1500;
     }
 
     // CollisionChecker
