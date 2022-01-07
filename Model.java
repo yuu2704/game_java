@@ -46,11 +46,10 @@ class Player extends Cpu{
         super(x,y,w,h,s,p,d,f);
     }
 
-    // setter
+    // add HitPoint
     public void setHP(int hp){
         hitPoint=hp;
     }
-    //getter
     public int getHP(){
         return hitPoint;
     }
@@ -61,11 +60,12 @@ class Model {
 //class Model extends Observable {
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
+    protected ArrayList<String> sounds;
     protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
     public static int WIDTH=1000, HEIGHT=800, MAX_TIME=6000;
-    protected int cpuNum, gameScene=0, time, loop, count;
+    protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
