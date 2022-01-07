@@ -21,8 +21,7 @@ class AllController implements ActionListener {
     private javax.swing.Timer timer;
     protected JButton start;
     protected JButton replay;
-    protected int count;
-    //int loop;
+    //protected int count,loop;
     public AllController(Model model, View view) {
         this.model = model;
         this.view = view;
@@ -31,7 +30,7 @@ class AllController implements ActionListener {
         replay=view.getPanel().getReplayButton();
         start.addActionListener(this);
         replay.addActionListener(this);
-        timer = new javax.swing.Timer(40, this);
+        timer = new javax.swing.Timer(20, this);
         //hard用
         //loop=0;
         //-----
@@ -41,16 +40,23 @@ class AllController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
             if(model.getScene()==1){
-                count++;
-                if(count==750){
+                model.setTime(model.getTime()+1);
+                int time=model.getTime();
+                if(time==1500){
                     model.setScene(2);
                 }else{
                     player.action();
                     //hard用
-                    cpu.updateCPU(/*loop++*/); //同期しないがいいかも?
-                    //if(loop>=cpu.getCount()){
-                    //    loop=0;
-                    //}
+                    if(time<750){
+                        cpu.updateCPU();
+                    }else{
+                        int loop=model.getLoop();
+                        cpu.hardupdateCPU(loop++); //同期しないがいいかも?
+                        if(loop>=model.getCount()){
+                            loop=0;
+                        }
+                        model.setLoop(loop);
+                    }
                     //-----
                 }
                 view.getPanel().setflag(model.getScene());
@@ -64,25 +70,20 @@ class AllController implements ActionListener {
             //System.out.println(model.getPlayer().getX()+" "+model.getPlayer().getY());
         }else{
             if(model.getScene()!=1){
-                model.initPlayer(500,500,200,100,50,100,1);
+                model.initPlayer();
                 for(int i=0;i<10;i++){
                     model.createCpu();
                 }
                 if(cpu==null){
                     cpu=new CPUController(model);
-                    //hard用
-                    //cpu=new HardCPUController(model);
-                    //-----
                     player=new PlayerController(model,view);
                 }else{
-                    //hard用
-                    //loop=0;
-                    //-----
                     player.init();
                 }
+                model.setLoop(0);;
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
-                count=0;
+                model.setCount(0);
                 view.repaint();
             }/*else{
                 model.setScene(model.getScene()+1);
@@ -100,8 +101,12 @@ class AllController implements ActionListener {
 class CPUController{
     protected Model model;
     //protected ArrayList<UOUOcpu> cpuList;
+    //protected ArrayList<Double> cpuyspeed;
+    //int count;
     public CPUController(Model m) {
         model=m;
+        //count = 0;
+        //cpuyspeed=new ArrayList<Double>();
     }
     public void updateCPU(){
         for(int i=0; i<model.getUOUOs().size(); i++){
@@ -110,7 +115,7 @@ class CPUController{
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
             Cpu u=model.getUOUOs().get(i);
-            if(u.getDirection()==-1&&u.getX()<-200||u.getDirection()==1&&u.getX()>1200){
+            if(u.getDirection()==-1&&u.getX()<0-u.getWidth()||u.getDirection()==1&&u.getX()>model.getFrameWidth()){
                 model.destroyCPU(i);
                 model.createCpu();
             }
@@ -128,6 +133,46 @@ class CPUController{
                 }
             }
             //消した時に追加
+        }
+    }
+
+    public void hardupdateCPU(int loop){
+        if(loop==0){
+            model.clearSpeedY();
+            for(int i=0; i<model.getUOUOs().size(); i++){
+                model.addSpeedY((Math.random()-0.5)*2);
+            }
+            Random random=new Random();
+            model.setCount(random.nextInt(37)+12);
+        }
+        for(int i=0; i<model.getUOUOs().size(); i++){
+            //System.out.println(model.getUOUOs().get(i).getX());
+            model.getUOUOs().get(i).setX(model.getUOUOs().get(i).getX()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection()*Math.random());
+
+            model.getUOUOs().get(i).setY(model.getUOUOs().get(i).getY()+model.getUOUOs().get(i).getSpeed()*model.getSpeedY(i));
+            //System.out.println(model.getUOUOs().get(i).getX());
+            //もし範囲外に言ったら消すように指示
+            Cpu u=model.getUOUOs().get(i);
+            if(u.getDirection()==-1&&u.getX()<0-u.getWidth()||u.getDirection()==1&&u.getX()>model.getFrameWidth()){
+                model.destroyCPU(i);
+                model.createCpu();
+            }else if(u.getY()<0-u.getHeight()||u.getY()>model.getFrameHeight()){
+                model.destroyCPU(i);
+                model.createCpu();
+            }
+            //ヒットフラグ立ってたら消す。
+            if(model.checkCollision(i)==1){
+                Player player=model.getPlayer();
+                player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
+                model.destroyCPU(i);
+                model.createCpu();
+            }else if(model.checkCollision(i)==2){
+                model.getPlayer().setHP(model.getPlayer().getHP()-1);
+                //System.out.println(model.getPlayer().getHP());
+                if(model.getPlayer().getHP()<=0){
+                    model.setScene(2);
+                }
+            }
         }
     }
 }
@@ -217,15 +262,15 @@ class PlayerController implements KeyListener {
         double y=player.getY()+move[1]*player.getSpeed();
         if(x<0){
             player.setX(0.0);
-        }else if(x>800){
-            player.setX(800.0);
+        }else if(x>model.getFrameWidth()-player.getWidth()){
+            player.setX(model.getFrameWidth()-player.getWidth());
         }else{
             player.setX(x);
         }
         if(y<0){
             player.setY(0.0);
-        }else if(y>900){
-            player.setY(900.0);
+        }else if(y>model.getFrameHeight()-player.getHeight()){
+            player.setY(model.getFrameHeight()-player.getHeight());
         }else{
             player.setY(y);
         }
@@ -236,99 +281,5 @@ class PlayerController implements KeyListener {
         move[1]=0;
         this.view.setFocusable(true);
         //System.out.println(view.isFocusable());
-    }
-}
-
-
-
-/*public void getIntersection(UOUOplayer player,UOUOcpu cpu){
-        double x2 = cpu.getX();
-        double y2 = cpu.getY();
-        double w2 = cpu.getWidth();
-        double h2 = cpu.getHeight();
-        double f1x2 = x1+Math.sqrt(w1*w1-h1*h1)/2;//焦点
-        double f2x2 = x1-Math.sqrt(w1*w1-h1*h1)/2;//焦点
-        double ang2 = 0.0;
-        //--------------------------------------------X2
-        double x1 = player.getX();
-        double y1 = player.getY();
-        double w1 = player.getWidth();
-        double h1 = player.getHeight();
-        double f1x1 = x1+Math.sqrt(w1*w1-h1*h1)/2;//焦点
-        double f2x1 = x1-Math.sqrt(w1*w1-h1*h1)/2;//焦点
-        double ang1 = 0.0;
-        //--------------------------------------------X1
-
-
-        //STEP 1
-        double dang = ang1-ang2;
-        double cos = Math.cos(dang);
-        double sin = Math.sin(dang);
-        double nx = w2*cos;
-        double ny = -1*w2*sin;
-        double px = h2*sin;
-        double py = h2*cos;
-        double ox = Math.cos(ang1)*(x2-x1)+Math.sin(ang1)*(y2-y1);
-        double oy = -1*Math.sin(ang1)*(x2-x1)+Math.cos(ang1)*(y2-y1);
-
-        //STEP 2
-        double rx_pow2 = 1/(w1*w1);
-        double ry_pow2 = 1/(h1*h1);
-        //http://www.marupeke296.com/COL_2D_No7_EllipseVsEllipse.html
-    }*/
-
-
-//getFlag,setFlag(場面判断用)ほしい
-//initCPU,initPlayerで初期設定を出来れば勝手にやってほしい。厳しければこちれでも出来るけど、拡張性が低くなりそう
-
-class HardCPUController extends CPUController{
-    protected ArrayList<Double> cpuyspeed;
-    int count;
-    public HardCPUController(Model m){
-        super(m);
-        count = 0;
-        cpuyspeed=new ArrayList<Double>();
-    }
-
-    public void updateCPU(int loop){
-        if(loop==0){
-            cpuyspeed.clear();
-            for(int i=0; i<model.getUOUOs().size(); i++){
-                cpuyspeed.add((Math.random()-0.5)*2);
-            }
-            Random random=new Random();
-            count=random.nextInt(37)+12;
-        }
-        for(int i=0; i<model.getUOUOs().size(); i++){
-            //System.out.println(model.getUOUOs().get(i).getX());
-            model.getUOUOs().get(i).setX(model.getUOUOs().get(i).getX()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection()*Math.random());
-            model.getUOUOs().get(i).setY(model.getUOUOs().get(i).getY()+model.getUOUOs().get(i).getSpeed()*cpuyspeed.get(i));
-            //System.out.println(model.getUOUOs().get(i).getX());
-            //もし範囲外に言ったら消すように指示
-            Cpu u=model.getUOUOs().get(i);
-            if(u.getDirection()==-1&&u.getX()<-200||u.getDirection()==1&&u.getX()>1200){
-                model.destroyCPU(i);
-                model.createCpu();
-            }else if(u.getY()<0||u.getY()>1200){
-                model.destroyCPU(i);
-                model.createCpu();
-            }
-            //ヒットフラグ立ってたら消す。
-            if(model.checkCollision(i)==1){
-                Player player=model.getPlayer();
-                player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
-                model.destroyCPU(i);
-                model.createCpu();
-            }else if(model.checkCollision(i)==2){
-                model.getPlayer().setHP(model.getPlayer().getHP()-1);
-                //System.out.println(model.getPlayer().getHP());
-                if(model.getPlayer().getHP()<=0){
-                    model.setScene(2);
-                }
-            }
-        }
-    }
-    public int getCount(){
-        return count;
     }
 }
