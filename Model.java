@@ -69,6 +69,8 @@ class Model {
     public Model(){
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
+        sounds = new ArrayList<String>();
+        speedY = new ArrayList<Double>();
         // pictures
         figures.add("fish_aji.png");
         figures.add("fish_sakana_piranha.png");
@@ -155,7 +157,7 @@ class Model {
         y=Math.random()*HEIGHT*0.8+HEIGHT*0.1;
         w=Math.random()*100+50; // 50~150
         h=Math.random()*70+30;  // 30~100
-        s=Math.random()*20+10;
+        s=Math.random()*10+10;
         p=(int)w*(int)h/1500;
         if(Math.random()<0.5){
             d=-1;
@@ -188,14 +190,14 @@ class Model {
 
     // playerInitializer
     public void initPlayer(){
-        player = new Player(WIDTH/2,HEIGHT/2,50,30,10,0,1,0);
+        player = new Player(WIDTH/2,HEIGHT/2,55,35,15,0,1,0);
     }
 
     // CollisionChecker
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
         if(player.x<cpu.get(idx).x && player.x+player.width>cpu.get(idx).x+cpu.get(idx).width){
             if(player.y<cpu.get(idx).y && player.y+player.height>cpu.get(idx).y+cpu.get(idx).height){
-                if(player.point+2<cpu.get(idx).point){
+                if(player.point+5<cpu.get(idx).point){
                     return 2;
                 }else{
                     return 1;
