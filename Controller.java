@@ -84,6 +84,7 @@ class AllController implements ActionListener {
                 model.setScene(1);
                 view.getPanel().setflag(model.getScene());
                 model.setCount(0);
+                model.setTime(0);
                 view.repaint();
             }/*else{
                 model.setScene(model.getScene()+1);
@@ -140,7 +141,7 @@ class CPUController{
         if(loop==0){
             model.clearSpeedY();
             for(int i=0; i<model.getUOUOs().size(); i++){
-                model.addSpeedY((Math.random()-0.5)*2);
+                model.addSpeedY(Math.random()-0.5);
             }
             Random random=new Random();
             model.setCount(random.nextInt(37)+12);
@@ -168,7 +169,7 @@ class CPUController{
                 model.createCpu();
             }else if(model.checkCollision(i)==2){
                 model.getPlayer().setHP(model.getPlayer().getHP()-1);
-                //System.out.println(model.getPlayer().getHP());
+                System.out.println(model.getPlayer().getHP());
                 if(model.getPlayer().getHP()<=0){
                     model.setScene(2);
                 }
