@@ -1,7 +1,4 @@
-import javax.swing.*;
-import java.awt.*;
 import java.util.*;
-import java.io.File;
 import java.lang.Math;
 
 abstract class UOUO {
@@ -64,10 +61,11 @@ class Model {
 //class Model extends Observable {
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
+    protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
-    public static int WIDTH=1000, HEIGHT=1000;
-    protected int cpuNum, gameScene=0;
+    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=6000;
+    protected int cpuNum, gameScene=0, time, loop, count;
     public Model(){
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
@@ -86,6 +84,9 @@ class Model {
     public ArrayList<String> getFigures(){
         return figures;
     }
+    public ArrayList<Double> getSpeedY(){
+        return speedY;
+    }
     public Cpu getUOUO(int idx){
         return cpu.get(idx);
     }
@@ -100,6 +101,24 @@ class Model {
     }
     public int getNum(){
         return cpuNum;
+    }
+    public int getMaxTime(){
+        return MAX_TIME;
+    }
+    public int getFrameWidth(){
+        return WIDTH;
+    }
+    public int getFrameHeight(){
+        return HEIGHT;
+    }
+    public int getTime(){
+        return time;
+    }
+    public int getLoop(){
+        return loop;
+    }
+    public int getCount(){
+        return count;
     }
 
     // cpuCreator
