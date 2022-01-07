@@ -74,6 +74,7 @@ class Model {
         figures.add("fish_sakana_piranha.png");
         figures.add("fish_ookamiuo.png");
         figures.add("taiyaki.png");
+        sounds.add("paku.mp3");
         newUOUO = null;
         cpuNum = 0;
     }
@@ -181,10 +182,8 @@ class Model {
     }
 
     // playerInitializer
-    public void initPlayer(double x,double y,double w,double h,double s,int p,int d){
-        player = new Player(x,y,w,h,s,p,d,0);
-        // setChanged();
-        // notifyObservers();
+    public void initPlayer(){
+        player = new Player(WIDTH/2,HEIGHT/2,50,30,10,0,1,0);
     }
 
     // CollisionChecker
