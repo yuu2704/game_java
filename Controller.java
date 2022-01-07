@@ -42,12 +42,12 @@ class AllController implements ActionListener {
             if(model.getScene()==1){
                 model.setTime(model.getTime()+1);
                 int time=model.getTime();
-                if(time==1500){
+                if(time==model.getMaxTime()){
                     model.setScene(2);
                 }else{
                     player.action();
                     //hard用
-                    if(time<750){
+                    if(time<model.getMaxTime()/2){
                         cpu.updateCPU();
                     }else{
                         int loop=model.getLoop();
