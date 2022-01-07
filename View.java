@@ -20,6 +20,7 @@ class UOUOPanel extends JPanel{
     protected ArrayList<Cpu> Cpu;
     protected Player player;
     protected int maxHP;
+    protected int maxTime;
     protected ArrayList<String> figures;
     protected int frame_width;
     protected int frame_height;
@@ -108,10 +109,8 @@ class UOUOPanel extends JPanel{
         timebar = new JProgressBar();
         timebar.setForeground(Color.black);
         timebar.setBackground(Color.white);
-        timebar.setStringPainted(true);
         timebar.setBorderPainted(true);
         timebar.setValue(100);
-        timebar.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
         timebar.setBounds(frame_width/4,0,frame_width/2,40);
         this.add(timebar);
         //"スコア"ラベル
@@ -167,6 +166,7 @@ class UOUOPanel extends JPanel{
 
             player = model.getPlayer();
             maxHP = player.getHP();
+            maxTime = model.getMaxTime();
         }else if(flag == 2){
             startButton.setEnabled(false); 
             startButton.setVisible(false);
@@ -193,8 +193,9 @@ class UOUOPanel extends JPanel{
         Cpu = model.getUOUOs();
         figures = model.getFigures();
         score_num_Label.setText(player.getPoint() + "");
-        hpbar.setValue(player.getHP());
-        timebar.setValue(50);
+        hpbar.setValue(player.getHP()*100/maxHP);
+        hpbar.setString(player.getHP() + "/" + maxHP);
+        timebar.setValue(model.getTime()*100/maxTime);
         for(Cpu cpu : Cpu){
             try{
                 file = new File(figures.get(cpu.getFig()));
