@@ -8,12 +8,6 @@ import javax.swing.*;
 import javax.swing.plaf.ProgressBarUI;
 import java.util.*;
 
-class BarUI extends ProgressBarUI {
-    public BarUI(int width, int height){
-
-    }
-}
-
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
     protected Model model;
@@ -93,7 +87,7 @@ class UOUOPanel extends JPanel{
         //途中スコア
         score_num_Label = new JLabel();
         score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        score_num_Label.setBounds(0,frame_height-100,400,100);
+        score_num_Label.setBounds(0,frame_height-100,400,80);
         this.add(score_num_Label);
         //HPbar
         hpbar = new JProgressBar();
@@ -192,10 +186,10 @@ class UOUOPanel extends JPanel{
         File file;
         Cpu = model.getUOUOs();
         figures = model.getFigures();
-        score_num_Label.setText(player.getPoint() + "");
+        score_num_Label.setText((int)player.getPoint() + "");
         hpbar.setValue(player.getHP()*100/maxHP);
         hpbar.setString(player.getHP() + "/" + maxHP);
-        timebar.setValue(model.getTime()*100/maxTime);
+        timebar.setValue((maxTime - model.getTime())*100/maxTime);
         for(Cpu cpu : Cpu){
             try{
                 file = new File(figures.get(cpu.getFig()));
