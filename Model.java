@@ -78,14 +78,35 @@ class Model {
         cpuNum = 0;
     }
 
+    // setter
+    public void addSpeedY(double s){
+        speedY.add(s);
+    }
+    public void deleteSpeedY(int idx){
+        speedY.remove(idx);
+    }
+    public void setTime(int t){
+        time=t;
+    }
+    public void setLoop(int l){
+        loop = l;
+    }
+    public void setCount(int c){
+        count = c;
+    }
+
+    // getter
     public ArrayList<Cpu> getUOUOs(){
         return cpu;
     }
     public ArrayList<String> getFigures(){
         return figures;
     }
-    public ArrayList<Double> getSpeedY(){
+    public ArrayList<Double> getSpeedYs(){
         return speedY;
+    }
+    public double getSpeedY(int idx){
+        return speedY.get(idx);
     }
     public Cpu getUOUO(int idx){
         return cpu.get(idx);
