@@ -5,8 +5,8 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.ProgressBarUI;
 import java.util.*;
+import javax.swing.border.*;
 
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
@@ -37,7 +37,6 @@ class UOUOPanel extends JPanel{
         setLAF();
         createLabelandButton();
         initScene();
-        repaint();
     }
 
     protected void setLAF(){
@@ -86,7 +85,7 @@ class UOUOPanel extends JPanel{
         this.add(startButton);
         //途中スコア
         score_num_Label = new JLabel();
-        score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,80));
+        score_num_Label.setFont(new Font("Silom",Font.BOLD,80));
         score_num_Label.setHorizontalAlignment(JLabel.CENTER);
         score_num_Label.setBounds(0,frame_height-100,200,80);
         this.add(score_num_Label);
@@ -96,28 +95,32 @@ class UOUOPanel extends JPanel{
         hpbar.setBackground(Color.white);
         hpbar.setStringPainted(true);
         hpbar.setBorderPainted(true);
+        LineBorder border = new LineBorder(Color.black, 1, true);
+        hpbar.setBorder(border);
         hpbar.setValue(100);
-        hpbar.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
+        hpbar.setFont(new Font("Silom",Font.BOLD,20));
         hpbar.setBounds(frame_width-300,frame_height-70,280,40);
         this.add(hpbar);
         //timebar
         timebar = new JProgressBar();
-        timebar.setForeground(Color.black);
+        timebar.setForeground(Color.blue);
         timebar.setBackground(Color.white);
         timebar.setBorderPainted(true);
+        timebar.setBorder(border);
         timebar.setValue(100);
         timebar.setBounds(frame_width/4,0,frame_width/2,40);
         this.add(timebar);
         //"スコア"ラベル
-        scorelabel = new JLabel("スコア");
-        scorelabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        scorelabel.setBounds(330,100,400,140);    //ボタン位置指定 真ん中
+        scorelabel = new JLabel("Score");
+        scorelabel.setFont(new Font("Silom", Font.BOLD,180));
+        scorelabel.setHorizontalAlignment(JLabel.CENTER);
+        scorelabel.setBounds(frame_width/2-300,frame_height/2-350,600,200);    //ボタン位置指定 真ん中
         this.add(scorelabel);
         //リザルトスコア
         resultscoreLabel = new JLabel();
-        resultscoreLabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
+        resultscoreLabel.setFont(new Font("Silom",Font.BOLD,180));
         resultscoreLabel.setHorizontalAlignment(JLabel.CENTER);
-        resultscoreLabel.setBounds(frame_width,frame_height,400,140);
+        resultscoreLabel.setBounds(frame_width/2-300,frame_height/2-90,600,180);
         this.add(resultscoreLabel);
         //リプレイボタン
         Image replaybuttonicon;
@@ -129,7 +132,7 @@ class UOUOPanel extends JPanel{
             replayButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
             replayButton.setBorderPainted(false);       //境界線消し
             replayButton.setFocusPainted(false);        //謎
-            replayButton.setBounds(350,500,280,140);    //ボタン位置指定 真ん中
+            replayButton.setBounds(frame_width/2-150,frame_height/2+160,280,140);    //ボタン位置指定 真ん中
         }catch(IOException e){
             System.out.println("button image file is not found.");
             e.printStackTrace();
