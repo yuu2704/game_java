@@ -4,6 +4,7 @@ import java.util.*;
 
 class Main{
     public static void main(String argv[]) {
+        ArrayList<Sounds> sounds = new ArrayList<Sounds>();
         Model model=new Model();
         View view=new View(model);
         AllController controller =new AllController(model,view);
@@ -42,12 +43,13 @@ class AllController implements ActionListener {
             if(model.getScene()==1){
                 model.setTime(model.getTime()+1);
                 int time=model.getTime();
-                if(time==model.getMaxTime()){
+                int max=model.getMaxTime();
+                if(time==max){
                     model.setScene(2);
                 }else{
                     player.action();
                     //hard用
-                    if(time<model.getMaxTime()/2){
+                    if(time<max/2){
                         cpu.updateCPU();
                     }else{
                         int loop=model.getLoop();
@@ -112,10 +114,10 @@ class CPUController{
     public void updateCPU(){
         for(int i=0; i<model.getUOUOs().size(); i++){
             //System.out.println(model.getUOUOs().get(i).getX());
-            model.getUOUOs().get(i).setX(model.getUOUOs().get(i).getX()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection());
+            Cpu u=model.getUOUOs().get(i);
+            u.setX(u.getX()+u.getSpeed()*u.getDirection());
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
-            Cpu u=model.getUOUOs().get(i);
             if(u.getDirection()==-1&&u.getX()<0-u.getWidth()||u.getDirection()==1&&u.getX()>model.getFrameWidth()){
                 model.destroyCPU(i);
                 model.createCpu();
@@ -148,12 +150,12 @@ class CPUController{
         }
         for(int i=0; i<model.getUOUOs().size(); i++){
             //System.out.println(model.getUOUOs().get(i).getX());
-            model.getUOUOs().get(i).setX(model.getUOUOs().get(i).getX()+model.getUOUOs().get(i).getSpeed()*model.getUOUOs().get(i).getDirection()*Math.random());
+            Cpu u=model.getUOUOs().get(i);
+            u.setX(u.getX()+u.getSpeed()*u.getDirection());
 
-            model.getUOUOs().get(i).setY(model.getUOUOs().get(i).getY()+model.getUOUOs().get(i).getSpeed()*model.getSpeedY(i));
+            u.setY(u.getY()+u.getSpeed()*model.getSpeedY(i));
             //System.out.println(model.getUOUOs().get(i).getX());
             //もし範囲外に言ったら消すように指示
-            Cpu u=model.getUOUOs().get(i);
             if(u.getDirection()==-1&&u.getX()<0-u.getWidth()||u.getDirection()==1&&u.getX()>model.getFrameWidth()){
                 model.destroyCPU(i);
                 model.createCpu();
@@ -165,6 +167,7 @@ class CPUController{
             if(model.checkCollision(i)==1){
                 Player player=model.getPlayer();
                 player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
+                model.resizePlayer();
                 model.destroyCPU(i);
                 model.createCpu();
             }else if(model.checkCollision(i)==2){
