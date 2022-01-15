@@ -15,6 +15,7 @@ class Cpu extends UOUO{
     public Cpu(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
+
     // setter
     public void setX(double x){ this.x=x; }
     public void setY(double y){ this.y=y; }
@@ -41,7 +42,8 @@ class Cpu extends UOUO{
 }
 
 class Player extends Cpu{
-    protected int hitPoint=3;
+    static int MAX_HP=30;
+    protected int hitPoint=MAX_HP;
     public Player(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
@@ -53,18 +55,20 @@ class Player extends Cpu{
     public int getHP(){
         return hitPoint;
     }
+    public int getMaxHP(){
+        return MAX_HP;
+    }
 }
 
 // Model
 class Model {
-//class Model extends Observable {
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
     protected ArrayList<String> sounds;
     protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
-    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=6000;
+    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;
     protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
@@ -171,8 +175,6 @@ class Model {
         cpu.add(uouo);
         newUOUO = uouo;
         cpuNum++;
-        // setChanged();
-        // notifyObservers();
     }
     // cpuDestroyer
     public void destroyCPU(int idx){
@@ -180,24 +182,24 @@ class Model {
         cpuNum--;
     }
     public void clearCPU(){
-        // while(cpuNum>0){
-        //     cpu.remove(cpuNum-1);
-        //     cpuNum--;
-        // }
         cpu.clear();
         cpuNum=0;
     }
 
     // playerInitializer
     public void initPlayer(){
-        player = new Player(WIDTH/2,HEIGHT/2,55,35,15,0,1,0);
+        player = new Player(WIDTH/2,HEIGHT/2,60,40,15,0,1,0);
+    }
+    public void resizePlayer(){
+        player.width = player.width+player.width*player.point/1500;
+        player.height = player.height+player.height*player.point/1500;
     }
 
     // CollisionChecker
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
-        if(player.x<cpu.get(idx).x && player.x+player.width>cpu.get(idx).x+cpu.get(idx).width){
-            if(player.y<cpu.get(idx).y && player.y+player.height>cpu.get(idx).y+cpu.get(idx).height){
-                if(player.point+5<cpu.get(idx).point){
+        if(cpu.get(idx).x<player.x+player.width/4 && player.x+player.width*3/4<cpu.get(idx).x+cpu.get(idx).width){
+            if(cpu.get(idx).y<player.y+player.height/4 && player.y+player.height*3/4<cpu.get(idx).y+cpu.get(idx).height){
+                if(player.point/20+3<cpu.get(idx).point){
                     return 2;
                 }else{
                     return 1;

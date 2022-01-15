@@ -1,12 +1,11 @@
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.ProgressBarUI;
 import java.util.*;
+import javax.swing.border.*;
+import javax.sound.sampled.*;
 
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
@@ -37,7 +36,6 @@ class UOUOPanel extends JPanel{
         setLAF();
         createLabelandButton();
         initScene();
-        repaint();
     }
 
     protected void setLAF(){
@@ -86,8 +84,9 @@ class UOUOPanel extends JPanel{
         this.add(startButton);
         //途中スコア
         score_num_Label = new JLabel();
-        score_num_Label.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        score_num_Label.setBounds(0,frame_height-100,400,80);
+        score_num_Label.setFont(new Font("Silom",Font.BOLD,80));
+        score_num_Label.setHorizontalAlignment(JLabel.CENTER);
+        score_num_Label.setBounds(0,frame_height-100,200,80);
         this.add(score_num_Label);
         //HPbar
         hpbar = new JProgressBar();
@@ -95,27 +94,32 @@ class UOUOPanel extends JPanel{
         hpbar.setBackground(Color.white);
         hpbar.setStringPainted(true);
         hpbar.setBorderPainted(true);
+        LineBorder border = new LineBorder(Color.black, 1, true);
+        hpbar.setBorder(border);
         hpbar.setValue(100);
-        hpbar.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
-        hpbar.setBounds(frame_width-300,frame_height-100,200,40);
+        hpbar.setFont(new Font("Silom",Font.BOLD,20));
+        hpbar.setBounds(frame_width-300,frame_height-70,280,40);
         this.add(hpbar);
         //timebar
         timebar = new JProgressBar();
-        timebar.setForeground(Color.black);
+        timebar.setForeground(Color.blue);
         timebar.setBackground(Color.white);
         timebar.setBorderPainted(true);
+        timebar.setBorder(border);
         timebar.setValue(100);
         timebar.setBounds(frame_width/4,0,frame_width/2,40);
         this.add(timebar);
         //"スコア"ラベル
-        scorelabel = new JLabel("スコア");
-        scorelabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        scorelabel.setBounds(330,100,400,140);    //ボタン位置指定 真ん中
+        scorelabel = new JLabel("Score");
+        scorelabel.setFont(new Font("Silom", Font.BOLD,180));
+        scorelabel.setHorizontalAlignment(JLabel.CENTER);
+        scorelabel.setBounds(frame_width/2-300,frame_height/2-350,600,200);    //ボタン位置指定 真ん中
         this.add(scorelabel);
         //リザルトスコア
         resultscoreLabel = new JLabel();
-        resultscoreLabel.setFont(new Font(Font.SANS_SERIF,Font.BOLD,120));
-        resultscoreLabel.setBounds(330,300,400,140);    //ボタン位置指定 真ん中
+        resultscoreLabel.setFont(new Font("Silom",Font.BOLD,180));
+        resultscoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        resultscoreLabel.setBounds(frame_width/2-300,frame_height/2-90,600,180);
         this.add(resultscoreLabel);
         //リプレイボタン
         Image replaybuttonicon;
@@ -127,7 +131,7 @@ class UOUOPanel extends JPanel{
             replayButton.setMargin(new Insets(1,1,1,1));            //ボタンと画像の間の余白
             replayButton.setBorderPainted(false);       //境界線消し
             replayButton.setFocusPainted(false);        //謎
-            replayButton.setBounds(350,500,280,140);    //ボタン位置指定 真ん中
+            replayButton.setBounds(frame_width/2-150,frame_height/2+160,280,140);    //ボタン位置指定 真ん中
         }catch(IOException e){
             System.out.println("button image file is not found.");
             e.printStackTrace();
@@ -159,7 +163,7 @@ class UOUOPanel extends JPanel{
             timebar.setVisible(true);
 
             player = model.getPlayer();
-            maxHP = player.getHP();
+            maxHP = player.getMaxHP();
             maxTime = model.getMaxTime();
         }else if(flag == 2){
             startButton.setEnabled(false); 
@@ -177,6 +181,8 @@ class UOUOPanel extends JPanel{
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
+        Sounds sound = new Sounds();
+        sound.soundPlay(0);
     }
 
     public void playPanel(Graphics g){
@@ -229,7 +235,7 @@ class UOUOPanel extends JPanel{
 
     public void resultPanel(Graphics g){                    //result画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        resultscoreLabel.setText(player.getPoint() + "");
+        resultscoreLabel.setText((int)player.getPoint() + "");
     }
 
     public void setflag(int flag){
@@ -248,6 +254,35 @@ class UOUOPanel extends JPanel{
     }
 }
 
+class Sounds {
+    protected ArrayList<String> sounds;
+    public Sounds(){
+        sounds = new ArrayList<String>();
+        sounds.add("eat.wav");
+    }
+
+    public void soundPlay(int idx){
+        AudioInputStream ais = null;
+        try {
+            ais = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            AudioFormat af = ais.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, af);
+            Clip clip = (Clip)AudioSystem.getLine(info);
+            clip.open(ais);
+            clip.loop(0);
+            clip.flush();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                ais.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
 class View extends JFrame{          //show window
     UOUOPanel panel;
     private int frame_width;
@@ -256,10 +291,11 @@ class View extends JFrame{          //show window
         this.setTitle("UOUO! Dream Fish!!");
         frame_width = model.getFrameWidth();
         frame_height = model.getFrameHeight();
-        this.setSize(frame_width, frame_height);
+        this.getContentPane().setPreferredSize(new Dimension(frame_width, frame_height));
         panel = new UOUOPanel(model,frame_width,frame_height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(panel);
+        this.pack();
         this.setVisible(true);
     }
 
