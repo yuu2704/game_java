@@ -42,7 +42,7 @@ class Cpu extends UOUO{
 }
 
 class Player extends Cpu{
-    static int MAX_HP=50;
+    static int MAX_HP=30;
     protected int hitPoint=MAX_HP;
     public Player(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
@@ -68,7 +68,7 @@ class Model {
     protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
-    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=3000;
+    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;
     protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
