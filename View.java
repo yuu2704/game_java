@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.*;
 import javax.swing.border.*;
+import javax.sound.sampled.*;
 
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
@@ -180,6 +181,8 @@ class UOUOPanel extends JPanel{
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
+        Sounds sound = new Sounds();
+        sound.soundPlay(0);
     }
 
     public void playPanel(Graphics g){
@@ -248,6 +251,35 @@ class UOUOPanel extends JPanel{
 
     public JButton getReplayButton(){
         return replayButton;
+    }
+}
+
+class Sounds {
+    protected ArrayList<String> sounds;
+    public Sounds(){
+        sounds = new ArrayList<String>();
+        sounds.add("eat.wav");
+    }
+
+    public void soundPlay(int idx){
+        AudioInputStream ais = null;
+        try {
+            ais = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            AudioFormat af = ais.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, af);
+            Clip clip = (Clip)AudioSystem.getLine(info);
+            clip.open(ais);
+            clip.loop(0);
+            clip.flush();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                ais.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
