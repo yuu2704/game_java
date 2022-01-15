@@ -42,7 +42,8 @@ class Cpu extends UOUO{
 }
 
 class Player extends Cpu{
-    protected int hitPoint=3;
+    static int MAX_HP=50;
+    protected int hitPoint=MAX_HP;
     public Player(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
@@ -53,6 +54,9 @@ class Player extends Cpu{
     }
     public int getHP(){
         return hitPoint;
+    }
+    public int getMaxHP(){
+        return MAX_HP;
     }
 }
 
