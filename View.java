@@ -1,5 +1,3 @@
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.*;
@@ -164,7 +162,7 @@ class UOUOPanel extends JPanel{
             timebar.setVisible(true);
 
             player = model.getPlayer();
-            maxHP = player.getHP();
+            maxHP = player.getMaxHP();
             maxTime = model.getMaxTime();
         }else if(flag == 2){
             startButton.setEnabled(false); 
