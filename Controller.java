@@ -30,7 +30,7 @@ class AllController implements ActionListener {
         replay=view.getPanel().getReplayButton();
         start.addActionListener(this);
         replay.addActionListener(this);
-        timer = new javax.swing.Timer(20, this);
+        timer = new javax.swing.Timer(50, this);
         //hard用
         //loop=0;
         //-----
@@ -141,7 +141,7 @@ class CPUController{
         if(loop==0){
             model.clearSpeedY();
             for(int i=0; i<model.getUOUOs().size(); i++){
-                model.addSpeedY(Math.random()-0.5);
+                model.addSpeedY((Math.random()-0.5));
             }
             Random random=new Random();
             model.setCount(random.nextInt(37)+12);
@@ -216,6 +216,26 @@ class PlayerController implements KeyListener {
             //model.setY(model.getY()+model.getSpeed());
             //System.out.println("aaa");
             break;
+            case KeyEvent.VK_A: // A or ←
+            move[0]=-1;
+            //model.setX(model.getX()-model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_D: // D or →
+            move[0]=1;
+            //model.setX(model.getX()+model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_W: // W or ↑
+            move[1]=-1;
+            //model.setY(model.getY()-model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_S: // S
+            move[1]=1;
+            //model.setY(model.getY()+model.getSpeed());
+            //System.out.println("aaa");
+            break;
         }
     }
     public void keyTyped(KeyEvent e) {}
@@ -244,6 +264,34 @@ class PlayerController implements KeyListener {
             //System.out.println("aaa");
             break;
             case KeyEvent.VK_DOWN: // S
+            if(move[1]==1){
+                move[1]=0;
+            }
+            //model.setY(model.getY()+model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_A: // A or ←
+            if(move[0]==-1){
+                move[0]=0;
+            }
+            //model.setX(model.getX()-model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_D: // D or →
+            if(move[0]==1){
+                move[0]=0;
+            }
+            //model.setX(model.getX()+model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_W: // W or ↑
+            if(move[1]==-1){
+                move[1]=0;
+            }
+            //model.setY(model.getY()-model.getSpeed());
+            //System.out.println("aaa");
+            break;
+            case KeyEvent.VK_S: // S
             if(move[1]==1){
                 move[1]=0;
             }
