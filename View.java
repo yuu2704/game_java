@@ -182,6 +182,11 @@ class UOUOPanel extends JPanel{
             resultscoreLabel.setVisible(true);
             replayButton.setVisible(true);
             replayButton.setEnabled(true);
+            if(player.getPoint() < 150){
+                sound.sePlay(2);
+            }else{
+                sound.sePlay(3);
+            }
         }
     }
 
@@ -266,6 +271,9 @@ class Sounds {
         sounds = new ArrayList<String>();
         sounds.add("uouo_start.wav");
         sounds.add("eat.wav");
+        sounds.add("ti-n.wav");
+        sounds.add("levelup.wav");
+        sounds.add("heavypunch.wav");
     }
 
     public void soundPlay(int idx){
