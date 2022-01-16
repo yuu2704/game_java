@@ -155,14 +155,14 @@ class Model {
     public void resizePlayer(){
         double centerX=player.getX()+player.getWidth()/2;
         double centerY=player.getY()+player.getHeight()/2;
-        player.setSize(WIDTH/20.0*(1+player.getPoint()/75.0),HEIGHT/20.0*(1+player.getPoint()/75.0));
+        player.setSize(WIDTH/20.0*(1+player.getPoint()/70.0),HEIGHT/20.0*(1+player.getPoint()/70.0));
         player.setLocation(centerX-player.getWidth()/2,centerY-player.getHeight()/2);
     }
 
     // CollisionChecker
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
-        if(cpu.get(idx).getX()<player.getX()+player.getWidth()*3/4 && player.getX()+player.getWidth()/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()){
-            if(cpu.get(idx).getY()<player.getY()+player.getHeight()*2/3 && player.getY()+player.getHeight()/3<cpu.get(idx).getY()+cpu.get(idx).getHeight()){
+        if(cpu.get(idx).getX()+cpu.get(idx).getWidth()/5<player.getX()+player.getWidth()*3/4 && player.getX()+player.getWidth()/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()*4/5){
+            if(cpu.get(idx).getY()+cpu.get(idx).getHeight()/4<player.getY()+player.getHeight()*3/4 && player.getY()+player.getHeight()/4<cpu.get(idx).getY()+cpu.get(idx).getHeight()*3/4){
                 if(player.getPoint()/20+3<cpu.get(idx).getPoint()){
                     sounds.sePlay(4);
                     System.out.print("damage!!  ");
