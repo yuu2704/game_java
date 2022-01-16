@@ -54,8 +54,8 @@ class AllController implements ActionListener {
                     }
                     //-----
                 }
-                view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
+                    view.getPanel().setflag(model.getScene());
                     model.clearCPU();
                 }
             }
