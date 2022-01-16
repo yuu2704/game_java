@@ -87,7 +87,7 @@ class Model {
     // protected Sounds sounds;
     public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;
     protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
-    public Model(){
+    public Model(Sounds sounds){
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
         speedY = new ArrayList<Double>();
@@ -204,22 +204,29 @@ class Model {
 
     // playerInitializer
     public void initPlayer(){
-        player = new Player(WIDTH/2,HEIGHT/2,60,40,15,0,1,0);
+        player = new Player(WIDTH/2,HEIGHT/2,WIDTH/20,HEIGHT/20,15,0,1,0);
     }
     public void resizePlayer(){
-        player.width = player.width+player.width*player.point/150;
-        player.height = player.height+player.height*player.point/150;
+        player.setSize(WIDTH/20.0*(1+player.getPoint()*3/50.0),HEIGHT/20.0*(1+player.getPoint()*3/50.0));
     }
 
     // CollisionChecker
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
-        if(cpu.get(idx).x<player.x+player.width/4 && player.x+player.width*3/4<cpu.get(idx).x+cpu.get(idx).width){
-            if(cpu.get(idx).y<player.y+player.height/4 && player.y+player.height*3/4<cpu.get(idx).y+cpu.get(idx).height){
-                if(player.point/20+3<cpu.get(idx).point){
+        if(cpu.get(idx).x<player.getX()+player.getWidth()/4 && player.getX()+player.getWidth()*3/4<cpu.get(idx).x+cpu.get(idx).width){
+            if(cpu.get(idx).y<player.getY()+player.getHeight()/4 && player.getY()+player.getHeight()*3/4<cpu.get(idx).y+cpu.get(idx).height){
+                if(player.getPoint()/3+3<cpu.get(idx).getPoint()){
+                    System.out.print("damage!!  ");
+                    System.out.print(cpu.get(idx).getPoint());
+                    System.out.print(">");
+                    System.out.println(player.getPoint()/3+3);
                     return 2;
                 }else{
                     // play paku.mp3
-                    // sounds.soundPlay();
+                    sounds.sePlay(1);
+                    System.out.print("paku!!   ");
+                    System.out.print(cpu.get(idx).getPoint());
+                    System.out.print("<");
+                    System.out.println(player.getPoint()/3+3);
                     return 1;
                 }
             }
