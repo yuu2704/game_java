@@ -183,7 +183,7 @@ class PlayerController implements KeyListener {
             player.setMove(1, 1);
             break;
             case KeyEvent.VK_A: // A
-            player.setMove(0, -1);
+            player.setMove(-1, 0);
             break;
             case KeyEvent.VK_D: // D
             player.setMove(1, 0);
