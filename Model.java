@@ -44,19 +44,36 @@ class Cpu extends UOUO{
 class Player extends Cpu{
     static int MAX_HP=30;
     protected int hitPoint=MAX_HP;
+    protected int[] move=new int[]{0,0};
+    protected double[] ratio=new double[]{0.0,0.0};
     public Player(double x,double y,double w,double h,double s,int p,int d,int f){
         super(x,y,w,h,s,p,d,f);
     }
 
-    // add HitPoint
+    // add player information
+    // setter
     public void setHP(int hp){
         hitPoint=hp;
     }
+    public void setMove(int value, int idx){
+        move[idx]=value;
+    }
+    public void setRatio(double value, int idx){
+        ratio[idx]=value;
+    }
+
+    // getter
     public int getHP(){
         return hitPoint;
     }
     public int getMaxHP(){
         return MAX_HP;
+    }
+    public int getMove(int idx){
+        return move[idx];
+    }
+    public double getRatio(int idx){
+        return ratio[idx];
     }
 }
 
@@ -64,23 +81,22 @@ class Player extends Cpu{
 class Model {
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
-    protected ArrayList<String> sounds;
     protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
+    // protected Sounds sounds;
     public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;
     protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
     public Model(){
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
-        sounds = new ArrayList<String>();
         speedY = new ArrayList<Double>();
         // pictures
+        figures.add("taiyaki.png");
         figures.add("fish_aji.png");
         figures.add("fish_sakana_piranha.png");
         figures.add("fish_ookamiuo.png");
-        figures.add("taiyaki.png");
-        sounds.add("paku.mp3");
+        // sounds.add("paku.mp3");
         newUOUO = null;
         cpuNum = 0;
     }
@@ -191,8 +207,8 @@ class Model {
         player = new Player(WIDTH/2,HEIGHT/2,60,40,15,0,1,0);
     }
     public void resizePlayer(){
-        player.width = player.width+player.width*player.point/1500;
-        player.height = player.height+player.height*player.point/1500;
+        player.width = player.width+player.width*player.point/150;
+        player.height = player.height+player.height*player.point/150;
     }
 
     // CollisionChecker
@@ -202,6 +218,8 @@ class Model {
                 if(player.point/20+3<cpu.get(idx).point){
                     return 2;
                 }else{
+                    // play paku.mp3
+                    // sounds.soundPlay();
                     return 1;
                 }
             }
