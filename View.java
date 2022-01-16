@@ -181,8 +181,6 @@ class UOUOPanel extends JPanel{
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        Sounds sound = new Sounds();
-        sound.soundPlay(0);
     }
 
     public void playPanel(Graphics g){
