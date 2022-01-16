@@ -161,10 +161,10 @@ class Model {
 
     // CollisionChecker
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
-        //if(cpu.get(idx).getX()<player.getX()+player.getWidth()/4 && player.getX()+player.getWidth()*3/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()){
         if(cpu.get(idx).getX()<player.getX()+player.getWidth()*3/4 && player.getX()+player.getWidth()/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()){
             if(cpu.get(idx).getY()<player.getY()+player.getHeight()*2/3 && player.getY()+player.getHeight()/3<cpu.get(idx).getY()+cpu.get(idx).getHeight()){
                 if(player.getPoint()/20+3<cpu.get(idx).getPoint()){
+                    sounds.sePlay(4);
                     System.out.print("damage!!  ");
                     System.out.print(cpu.get(idx).getPoint());
                     System.out.print(">");
