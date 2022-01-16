@@ -4,9 +4,9 @@ import java.util.*;
 
 class Main{
     public static void main(String argv[]) {
-        ArrayList<Sounds> sounds = new ArrayList<Sounds>();
-        Model model=new Model();
-        View view=new View(model);
+        Sounds sounds = new Sounds();
+        Model model=new Model(sounds);
+        View view=new View(model,sounds);
         AllController controller =new AllController(model,view);
     }
 }
