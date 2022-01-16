@@ -300,6 +300,8 @@ class Sounds {
             DataLine.Info info = new DataLine.Info(Clip.class, af);
             clip_se = (Clip)AudioSystem.getLine(info);
             clip_se.open(ais_se);
+            FloatControl control = (FloatControl)clip_se.getControl(FloatControl.Type.MASTER_GAIN);
+            control.setValue((float) Math.log10(0.05) * 20);
             clip_se.loop(0);
             clip_se.flush();
         }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
