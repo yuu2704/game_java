@@ -269,13 +269,13 @@ class Sounds {
     }
 
     public void soundPlay(int idx){
-        AudioInputStream ais = null;
+        AudioInputStream ais_bgm = null;
         try {
-            ais = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
-            AudioFormat af = ais.getFormat();
+            ais_bgm = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            AudioFormat af = ais_bgm.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, af);
             clip_bgm = (Clip)AudioSystem.getLine(info);
-            clip_bgm.open(ais);
+            clip_bgm.open(ais_bgm);
             clip_bgm.loop(10);
             clip_bgm.flush();
             clip_bgm.setFramePosition(0);
@@ -285,19 +285,23 @@ class Sounds {
     }
 
     public void sePlay(int idx){
-        AudioInputStream ais = null;
+        AudioInputStream ais_se = null;
         try {
-            ais = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
-            AudioFormat af = ais.getFormat();
+            ais_se = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            AudioFormat af = ais_se.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, af);
             clip_se = (Clip)AudioSystem.getLine(info);
-            clip_se.open(ais);
+            clip_se.open(ais_se);
             clip_se.loop(0);
             clip_se.flush();
         }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }finally {
-            clip_se.close();
+            try {
+                ais_se.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
