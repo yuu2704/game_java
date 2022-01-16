@@ -52,29 +52,15 @@ class Player extends Cpu{
 
     // add player information
     // setter
-    public void setHP(int hp){
-        hitPoint=hp;
-    }
-    public void setMove(int value, int idx){
-        move[idx]=value;
-    }
-    public void setRatio(double value, int idx){
-        ratio[idx]=value;
-    }
+    public void setHP(int hp){ hitPoint=hp; }
+    public void setMove(int value, int idx){ move[idx]=value; }
+    public void setRatio(double value, int idx){ ratio[idx]=value; }
 
     // getter
-    public int getHP(){
-        return hitPoint;
-    }
-    public int getMaxHP(){
-        return MAX_HP;
-    }
-    public int getMove(int idx){
-        return move[idx];
-    }
-    public double getRatio(int idx){
-        return ratio[idx];
-    }
+    public int getHP(){ return hitPoint; }
+    public int getMaxHP(){ return MAX_HP; }
+    public int getMove(int idx){ return move[idx]; }
+    public double getRatio(int idx){ return ratio[idx]; }
 }
 
 // Model
@@ -84,10 +70,12 @@ class Model {
     protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
+    protected Sounds sounds;
     // protected Sounds sounds;
     public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;
     protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
     public Model(Sounds sounds){
+        this.sounds = sounds;
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
         speedY = new ArrayList<Double>();
@@ -102,71 +90,29 @@ class Model {
     }
 
     // setter
-    public void addSpeedY(double s){
-        speedY.add(s);
-    }
-    public void deleteSpeedY(int idx){
-        speedY.remove(idx);
-    }
-    public void clearSpeedY(){
-        speedY.clear();
-    }
-    public void setTime(int t){
-        time=t;
-    }
-    public void setLoop(int l){
-        loop = l;
-    }
-    public void setCount(int c){
-        count = c;
-    }
+    public void addSpeedY(double s){ speedY.add(s); }
+    public void deleteSpeedY(int idx){ speedY.remove(idx); }
+    public void clearSpeedY(){ speedY.clear(); }
+    public void setTime(int t){ time=t; }
+    public void setLoop(int l){ loop = l; }
+    public void setCount(int c){ count = c; }
+    public void setScene(int n){ gameScene=n; }
 
     // getter
-    public ArrayList<Cpu> getUOUOs(){
-        return cpu;
-    }
-    public ArrayList<String> getFigures(){
-        return figures;
-    }
-    public ArrayList<Double> getSpeedYs(){
-        return speedY;
-    }
-    public double getSpeedY(int idx){
-        return speedY.get(idx);
-    }
-    public Cpu getUOUO(int idx){
-        return cpu.get(idx);
-    }
-    public Player getPlayer(){
-        return player;
-    }
-    public void setScene(int n){
-        gameScene=n;
-    }
-    public int getScene(){
-        return gameScene;
-    }
-    public int getNum(){
-        return cpuNum;
-    }
-    public int getMaxTime(){
-        return MAX_TIME;
-    }
-    public int getFrameWidth(){
-        return WIDTH;
-    }
-    public int getFrameHeight(){
-        return HEIGHT;
-    }
-    public int getTime(){
-        return time;
-    }
-    public int getLoop(){
-        return loop;
-    }
-    public int getCount(){
-        return count;
-    }
+    public ArrayList<Cpu> getUOUOs(){ return cpu; }
+    public ArrayList<String> getFigures(){ return figures; }
+    public ArrayList<Double> getSpeedYs(){ return speedY; }
+    public double getSpeedY(int idx){ return speedY.get(idx); }
+    public Cpu getUOUO(int idx){ return cpu.get(idx); }
+    public Player getPlayer(){ return player; }
+    public int getScene(){ return gameScene; }
+    public int getNum(){ return cpuNum; }
+    public int getMaxTime(){ return MAX_TIME; }
+    public int getFrameWidth(){ return WIDTH; }
+    public int getFrameHeight(){ return HEIGHT; }
+    public int getTime(){ return time; }
+    public int getLoop(){ return loop; }
+    public int getCount(){ return count; }
 
     // cpuCreator
     public void createCpu(){
@@ -207,13 +153,16 @@ class Model {
         player = new Player(WIDTH/2,HEIGHT/2,WIDTH/20,HEIGHT/20,15,0,1,0);
     }
     public void resizePlayer(){
+        double centerX=player.getX()+player.getWidth()/2;
+        double centerY=player.getY()+player.getHeight()/2;
         player.setSize(WIDTH/20.0*(1+player.getPoint()*3/50.0),HEIGHT/20.0*(1+player.getPoint()*3/50.0));
+        player.setLocation(centerX-player.getWidth()/2,centerY-player.getHeight()/2);
     }
 
     // CollisionChecker
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
-        if(cpu.get(idx).x<player.getX()+player.getWidth()/4 && player.getX()+player.getWidth()*3/4<cpu.get(idx).x+cpu.get(idx).width){
-            if(cpu.get(idx).y<player.getY()+player.getHeight()/4 && player.getY()+player.getHeight()*3/4<cpu.get(idx).y+cpu.get(idx).height){
+        if(cpu.get(idx).getX()<player.getX()+player.getWidth()/4 && player.getX()+player.getWidth()*3/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()){
+            if(cpu.get(idx).getY()<player.getY()+player.getHeight()/4 && player.getY()+player.getHeight()*3/4<cpu.get(idx).getY()+cpu.get(idx).getHeight()){
                 if(player.getPoint()/3+3<cpu.get(idx).getPoint()){
                     System.out.print("damage!!  ");
                     System.out.print(cpu.get(idx).getPoint());
