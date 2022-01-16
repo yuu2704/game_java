@@ -112,7 +112,6 @@ class CPUController{
                     model.setScene(2);
                 }
             }
-            //消した時に追加
         }
     }
 
@@ -306,7 +305,7 @@ class PlayerController implements KeyListener {
     public void init(){
         Player player=model.getPlayer();
         player.setMove(0,0);
-        player.setMove(1,0);
+        player.setMove(0,1);
         player.setRatio(0.0,0);
         player.setRatio(0.0,1);
         this.view.setFocusable(true);
