@@ -146,7 +146,6 @@ class CPUController{
                 model.createCpu();
             }else if(model.checkCollision(i)==2){
                 model.getPlayer().setHP(model.getPlayer().getHP()-1);
-                System.out.println(model.getPlayer().getHP());
                 if(model.getPlayer().getHP()<=0){
                     model.setScene(2);
                 }
