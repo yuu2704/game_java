@@ -150,6 +150,9 @@ class UOUOPanel extends JPanel{
 
             startButton.setEnabled(true);
             startButton.setVisible(true);
+            
+            Sounds sound = new Sounds();
+            sound.soundPlay(0);
         }else if(flag == 1){
             startButton.setEnabled(false); 
             startButton.setVisible(false);
@@ -181,8 +184,6 @@ class UOUOPanel extends JPanel{
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        Sounds sound = new Sounds();
-        sound.soundPlay(0);
     }
 
     public void playPanel(Graphics g){
@@ -258,6 +259,7 @@ class Sounds {
     protected ArrayList<String> sounds;
     public Sounds(){
         sounds = new ArrayList<String>();
+        sounds.add("uouo_start.wav");
         sounds.add("eat.wav");
     }
 
