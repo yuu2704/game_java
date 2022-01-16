@@ -10,6 +10,7 @@ import javax.sound.sampled.*;
 class UOUOPanel extends JPanel{
     int flag;  //0 = startPanel    1 = playPanel    2 = resultPanel
     protected Model model;
+    protected Sounds sound;
     protected ArrayList<Cpu> Cpu;
     protected Player player;
     protected int maxHP;
@@ -27,8 +28,9 @@ class UOUOPanel extends JPanel{
     protected JProgressBar hpbar;
     protected JProgressBar timebar;
 
-    public UOUOPanel(Model model,int frame_width,int frame_height){
+    public UOUOPanel(Model model,Sounds sound,int frame_width,int frame_height){
         this.model = model;
+        this.sound = sound;
         this.frame_width = frame_width;
         this.frame_height = frame_height;
         this.setLayout(null);
@@ -150,6 +152,8 @@ class UOUOPanel extends JPanel{
 
             startButton.setEnabled(true);
             startButton.setVisible(true);
+            
+            sound.soundPlay(0);
         }else if(flag == 1){
             startButton.setEnabled(false); 
             startButton.setVisible(false);
@@ -165,6 +169,8 @@ class UOUOPanel extends JPanel{
             player = model.getPlayer();
             maxHP = player.getMaxHP();
             maxTime = model.getMaxTime();
+
+            sound.soundClose();
         }else if(flag == 2){
             startButton.setEnabled(false); 
             startButton.setVisible(false);
@@ -181,8 +187,6 @@ class UOUOPanel extends JPanel{
 
     public void startPanel(Graphics g){     //スタート画面
         g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
-        Sounds sound = new Sounds();
-        sound.soundPlay(0);
     }
 
     public void playPanel(Graphics g){
@@ -256,8 +260,11 @@ class UOUOPanel extends JPanel{
 
 class Sounds {
     protected ArrayList<String> sounds;
+    Clip clip_bgm;
+    Clip clip_se;
     public Sounds(){
         sounds = new ArrayList<String>();
+        sounds.add("uouo_start.wav");
         sounds.add("eat.wav");
     }
 
@@ -267,19 +274,41 @@ class Sounds {
             ais = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
             AudioFormat af = ais.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, af);
-            Clip clip = (Clip)AudioSystem.getLine(info);
-            clip.open(ais);
-            clip.loop(0);
-            clip.flush();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            clip_bgm = (Clip)AudioSystem.getLine(info);
+            clip_bgm.open(ais);
+            clip_bgm.loop(10);
+            clip_bgm.flush();
+            clip_bgm.setFramePosition(0);
+        }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sePlay(int idx){
+        AudioInputStream ais = null;
+        try {
+            ais = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            AudioFormat af = ais.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, af);
+            clip_se = (Clip)AudioSystem.getLine(info);
+            clip_se.open(ais);
+            clip_se.loop(0);
+            clip_se.flush();
+        }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ais.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            clip_se.close();
         }
+    }
+
+    public void soundClose(){
+        clip_bgm.stop();
+        clip_bgm.close();
+    }
+
+    public void seClose(){
+        clip_se.stop();
+        clip_se.close();
     }
 }
 
@@ -287,12 +316,12 @@ class View extends JFrame{          //show window
     UOUOPanel panel;
     private int frame_width;
     private int frame_height;
-    public View(Model model){
+    public View(Model model,Sounds sound){
         this.setTitle("UOUO! Dream Fish!!");
         frame_width = model.getFrameWidth();
         frame_height = model.getFrameHeight();
         this.getContentPane().setPreferredSize(new Dimension(frame_width, frame_height));
-        panel = new UOUOPanel(model,frame_width,frame_height);
+        panel = new UOUOPanel(model,sound,frame_width,frame_height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(panel);
         this.pack();

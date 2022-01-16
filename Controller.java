@@ -4,9 +4,9 @@ import java.util.*;
 
 class Main{
     public static void main(String argv[]) {
-        ArrayList<Sounds> sounds = new ArrayList<Sounds>();
-        Model model=new Model();
-        View view=new View(model);
+        Sounds sounds = new Sounds();
+        Model model=new Model(sounds);
+        View view=new View(model,sounds);
         AllController controller =new AllController(model,view);
     }
 }
@@ -54,8 +54,8 @@ class AllController implements ActionListener {
                     }
                     //-----
                 }
-                view.getPanel().setflag(model.getScene());
                 if(model.getScene()==2){
+                    view.getPanel().setflag(model.getScene());
                     model.clearCPU();
                 }
             }
@@ -146,7 +146,6 @@ class CPUController{
                 model.createCpu();
             }else if(model.checkCollision(i)==2){
                 model.getPlayer().setHP(model.getPlayer().getHP()-1);
-                System.out.println(model.getPlayer().getHP());
                 if(model.getPlayer().getHP()<=0){
                     model.setScene(2);
                 }
