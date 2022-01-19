@@ -1,7 +1,7 @@
 import java.util.*;
 import java.lang.Math;
 
-abstract class UOUO {
+abstract class UOUO {   // base
     protected double x,y,width,height,speed;
     protected int point,direction,hitFlag=0,figNum;
     public UOUO(double x,double y,double w,double h,double s,int p,int d,int f){
@@ -42,7 +42,7 @@ class Cpu extends UOUO{
 }
 
 class Player extends Cpu{
-    static int MAX_HP=30;
+    public static int MAX_HP=30;
     protected int hitPoint=MAX_HP;
     protected int[] move=new int[]{0,0};
     protected double[] ratio=new double[]{0.0,0.0};
@@ -65,15 +65,15 @@ class Player extends Cpu{
 
 // Model
 class Model {
+    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;    // game window
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;
     protected ArrayList<Double> speedY;
     protected Cpu newUOUO;
     protected Player player;
     protected Sounds sounds;
-    // protected Sounds sounds;
-    public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;
     protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
+
     public Model(Sounds sounds){
         this.sounds = sounds;
         cpu = new ArrayList<Cpu>();
@@ -84,7 +84,6 @@ class Model {
         figures.add("fish_aji.png");
         figures.add("fish_sakana_piranha.png");
         figures.add("fish_ookamiuo.png");
-        // sounds.add("paku.mp3");
         newUOUO = null;
         cpuNum = 0;
     }
@@ -138,6 +137,7 @@ class Model {
         newUOUO = uouo;
         cpuNum++;
     }
+
     // cpuDestroyer
     public void destroyCPU(int idx){
         cpu.remove(idx);
@@ -164,23 +164,26 @@ class Model {
         if(cpu.get(idx).getX()+cpu.get(idx).getWidth()/5<player.getX()+player.getWidth()*3/4 && player.getX()+player.getWidth()/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()*4/5){
             if(cpu.get(idx).getY()+cpu.get(idx).getHeight()/4<player.getY()+player.getHeight()*3/4 && player.getY()+player.getHeight()/4<cpu.get(idx).getY()+cpu.get(idx).getHeight()*3/4){
                 if(player.getPoint()/20+3<cpu.get(idx).getPoint()){
-                    sounds.sePlay(4);
-                    System.out.print("damage!!  ");
+                    // checker
+                    System.out.print("damage!! ");
                     System.out.print(cpu.get(idx).getPoint());
                     System.out.print(">");
                     System.out.println(player.getPoint()/3+3);
-                    return 2;
+
+                    sounds.sePlay(4);   // play damage sound
+                    return 2;   // not edible
                 }else{
-                    // play paku.mp3
-                    sounds.sePlay(1);
+                    // checker
                     System.out.print("paku!!   ");
                     System.out.print(cpu.get(idx).getPoint());
                     System.out.print("<");
                     System.out.println(player.getPoint()/3+3);
-                    return 1;
+
+                    sounds.sePlay(1);   // play bite sound
+                    return 1;   // edible
                 }
             }
         }
-        return 0;
+        return 0;   // not collision
     }
 }
