@@ -179,6 +179,7 @@ class UOUOPanel extends JPanel{
             maxTime = model.getMaxTime();
 
             sound.soundClose();
+            sound.soundPlay(5);
         }else if(flag == 2){
             startButton.setEnabled(false); 
             startButton.setVisible(false);
@@ -190,6 +191,8 @@ class UOUOPanel extends JPanel{
             resultscoreLabel.setVisible(true);
             replayButton.setVisible(true);
             replayButton.setEnabled(true);
+
+            sound.soundClose();
             if(player.getPoint() < 70){
                 sound.sePlay(2);
             }else{
@@ -282,6 +285,7 @@ class Sounds {
         sounds.add("ti-n.wav");
         sounds.add("levelup.wav");
         sounds.add("heavypunch.wav");
+        sounds.add("uouo_bgm.wav"); 
     }
 
     public void soundPlay(int idx){
