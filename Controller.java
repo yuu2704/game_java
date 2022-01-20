@@ -7,7 +7,7 @@ class Main{
         Sounds sounds = new Sounds();
         Model model=new Model(sounds);
         View view=new View(model,sounds);
-        AllController controller =new AllController(model,view);
+        new AllController(model,view);
     }
 }
 
