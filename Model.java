@@ -164,21 +164,9 @@ class Model {
         if(cpu.get(idx).getX()+cpu.get(idx).getWidth()/5<player.getX()+player.getWidth()*3/4 && player.getX()+player.getWidth()/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()*4/5){
             if(cpu.get(idx).getY()+cpu.get(idx).getHeight()/4<player.getY()+player.getHeight()*3/4 && player.getY()+player.getHeight()/4<cpu.get(idx).getY()+cpu.get(idx).getHeight()*3/4){
                 if(player.getPoint()/20+3<cpu.get(idx).getPoint()){
-                    // checker
-                    System.out.print("damage!! ");
-                    System.out.print(cpu.get(idx).getPoint());
-                    System.out.print(">");
-                    System.out.println(player.getPoint()/3+3);
-
                     sounds.sePlay(4);   // play damage sound
                     return 2;   // not edible
                 }else{
-                    // checker
-                    System.out.print("paku!!   ");
-                    System.out.print(cpu.get(idx).getPoint());
-                    System.out.print("<");
-                    System.out.println(player.getPoint()/3+3);
-
                     sounds.sePlay(1);   // play bite sound
                     return 1;   // edible
                 }
