@@ -19,6 +19,7 @@ class UOUOPanel extends JPanel{
     protected int frame_width;
     protected int frame_height;
     protected BufferedImage backgroundImage;
+    protected BufferedImage startbackgroundImage;
 
     protected JButton startButton;
     protected JButton replayButton;
@@ -66,6 +67,13 @@ class UOUOPanel extends JPanel{
             this.backgroundImage = ImageIO.read(new File("./background_umi.jpg"));
         }catch(IOException e){
             System.out.println("background image file is not found.");
+            e.printStackTrace();
+        }
+        //スタート画面背景
+        try{
+            this.startbackgroundImage = ImageIO.read(new File("./UOUO_title.png"));
+        }catch(IOException e){
+            System.out.println("startbackground image file is not found.");
             e.printStackTrace();
         }
         //スタートボタン
@@ -182,7 +190,7 @@ class UOUOPanel extends JPanel{
             resultscoreLabel.setVisible(true);
             replayButton.setVisible(true);
             replayButton.setEnabled(true);
-            if(player.getPoint() < 150){
+            if(player.getPoint() < 70){
                 sound.sePlay(2);
             }else{
                 sound.sePlay(3);
@@ -191,7 +199,7 @@ class UOUOPanel extends JPanel{
     }
 
     public void startPanel(Graphics g){     //スタート画面
-        g.drawImage(backgroundImage, 0, 0, frame_width, frame_height,this);
+        g.drawImage(startbackgroundImage, 0, 0, frame_width, frame_height,this);
     }
 
     public void playPanel(Graphics g){
