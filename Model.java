@@ -118,7 +118,7 @@ class Model {
         Cpu uouo;
         double x,y,w,h,s;
         int d,p,f;
-        x=Math.random()*WIDTH/2;
+        x=Math.random()*WIDTH/2+WIDTH/4;
         y=Math.random()*HEIGHT*0.8+HEIGHT*0.1;
         w=Math.random()*100+50; // 50~150
         h=Math.random()*70+30;  // 30~100
@@ -150,12 +150,12 @@ class Model {
 
     // playerInitializer
     public void initPlayer(){
-        player = new Player(WIDTH/2,HEIGHT/2,WIDTH/20,HEIGHT/20,15,0,1,0);
+        player = new Player(WIDTH/2,HEIGHT/2,75,60,15,0,1,0);
     }
     public void resizePlayer(){
         double centerX=player.getX()+player.getWidth()/2;
         double centerY=player.getY()+player.getHeight()/2;
-        player.setSize(WIDTH/20.0*(1+player.getPoint()/70.0),HEIGHT/20.0*(1+player.getPoint()/70.0));
+        player.setSize(75*(1+player.getPoint()/100.0),60*(1+player.getPoint()/100.0));
         player.setLocation(centerX-player.getWidth()/2,centerY-player.getHeight()/2);
     }
 
@@ -163,7 +163,7 @@ class Model {
     public int checkCollision(int idx){ // notCollision:0, edible:1, notEdible:2
         if(cpu.get(idx).getX()+cpu.get(idx).getWidth()/5<player.getX()+player.getWidth()*3/4 && player.getX()+player.getWidth()/4<cpu.get(idx).getX()+cpu.get(idx).getWidth()*4/5){
             if(cpu.get(idx).getY()+cpu.get(idx).getHeight()/4<player.getY()+player.getHeight()*3/4 && player.getY()+player.getHeight()/4<cpu.get(idx).getY()+cpu.get(idx).getHeight()*3/4){
-                if(player.getPoint()/20+3<cpu.get(idx).getPoint()){
+                if(player.getWidth()*player.getHeight()*1.05<cpu.get(idx).getWidth()*cpu.get(idx).getHeight()){
                     sounds.sePlay(4);   // play damage sound
                     return 2;   // not edible
                 }else{
