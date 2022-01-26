@@ -193,7 +193,7 @@ class UOUOPanel extends JPanel{
             replayButton.setEnabled(true);
 
             sound.soundClose();
-            if(player.getPoint() < 70){
+            if(player.getPoint() < 100){
                 sound.sePlay(2);
             }else{
                 sound.sePlay(3);
