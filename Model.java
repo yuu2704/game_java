@@ -67,23 +67,23 @@ class Player extends Cpu{
 class Model {
     public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;    // game window
     protected ArrayList<Cpu> cpu;
-    protected ArrayList<String> figures;
-    protected ArrayList<Double> speedY;
+    protected ArrayList<String> figures;    // view
+    protected ArrayList<Double> speedY;     // controller
     protected Cpu newUOUO;
     protected Player player;
-    protected Sounds sounds;
-    protected int cpuNum, gameScene=0, time=0, loop=0, count=0;
+    protected Sounds sounds;                // view
+    protected int cpuNum, gameScene=0, time=0, loop=0, count=0; // view and controller
 
-    public Model(Sounds sounds){
+    public Model(Sounds sounds){    // Sounds is from View.java
         this.sounds = sounds;
         cpu = new ArrayList<Cpu>();
         figures = new ArrayList<String>();
         speedY = new ArrayList<Double>();
         // pictures
-        figures.add("taiyaki.png");
-        figures.add("fish_aji.png");
-        figures.add("fish_sakana_piranha.png");
-        figures.add("fish_ookamiuo.png");
+        figures.add("taiyaki.png");             // Player
+        figures.add("fish_aji.png");            // cpu1
+        figures.add("fish_sakana_piranha.png"); // cpu2
+        figures.add("fish_ookamiuo.png");       // cpu3
         newUOUO = null;
         cpuNum = 0;
     }
@@ -122,8 +122,8 @@ class Model {
         y=Math.random()*HEIGHT*0.8+HEIGHT*0.1;
         w=Math.random()*100+50; // 50~150
         h=Math.random()*70+30;  // 30~100
-        s=Math.random()*10+10;
-        p=(int)w*(int)h/1500;
+        s=Math.random()*10+10;  // 10~20
+        p=(int)w*(int)h/1500;   // 1~10
         if(Math.random()<0.5){
             d=-1;
             x+=WIDTH+w;
