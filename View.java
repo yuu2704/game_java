@@ -193,7 +193,7 @@ class UOUOPanel extends JPanel{
             replayButton.setEnabled(true);
 
             sound.soundClose();
-            if(player.getPoint() < 70){
+            if(player.getPoint() < 100){
                 sound.sePlay(2);
             }else{
                 sound.sePlay(3);
@@ -296,7 +296,7 @@ class Sounds {
             DataLine.Info info = new DataLine.Info(Clip.class, af);
             clip_bgm = (Clip)AudioSystem.getLine(info);
             clip_bgm.open(ais_bgm);
-            clip_bgm.loop(10);
+            clip_bgm.loop(Clip.LOOP_CONTINUOUSLY);
             clip_bgm.flush();
             clip_bgm.setFramePosition(0);
         }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
