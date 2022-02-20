@@ -52,7 +52,6 @@ class AllController implements ActionListener {
                         }
                         model.setLoop(loop);
                     }
-                    //-----
                 }
                 if(model.getScene()==2){
                     view.getPanel().setflag(model.getScene());
@@ -94,12 +93,12 @@ class CPUController{
         for(int i=0; i<model.getUOUOs().size(); i++){
             Cpu u=model.getUOUOs().get(i);
             u.setX(u.getX()+u.getSpeed()*u.getDirection());
-            //もし範囲外に言ったら消すように指示
+            //範囲外に言ったら消すように指示
             if(u.getDirection()==-1&&u.getX()<0-u.getWidth()||u.getDirection()==1&&u.getX()>model.getFrameWidth()){
                 model.destroyCPU(i);
                 model.createCpu();
             }
-            //ヒットフラグ立ってたら消す。
+            //当たっているなら消すように指示
             if(model.checkCollision(i)==1){
                 Player player=model.getPlayer();
                 player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
@@ -129,7 +128,7 @@ class CPUController{
             u.setX(u.getX()+u.getSpeed()*u.getDirection());
 
             u.setY(u.getY()+u.getSpeed()*model.getSpeedY(i));
-            //もし範囲外に言ったら消すように指示
+            //範囲外に言ったら消すように指示
             if(u.getDirection()==-1&&u.getX()<0-u.getWidth()||u.getDirection()==1&&u.getX()>model.getFrameWidth()){
                 model.destroyCPU(i);
                 model.createCpu();
@@ -137,7 +136,7 @@ class CPUController{
                 model.destroyCPU(i);
                 model.createCpu();
             }
-            //ヒットフラグ立ってたら消す。
+            //当たっているなら消すように指示
             if(model.checkCollision(i)==1){
                 Player player=model.getPlayer();
                 player.setPoint((int)(player.getPoint()+model.getUOUO(i).getPoint()));
@@ -259,7 +258,8 @@ class PlayerController implements KeyListener {
             if(Math.abs(ratio_x)<0.1){
                 ratio_x=0;
             }
-
+        }
+        if(move_y==0){
             if(ratio_y>0){
                 ratio_y=ratio_y-0.1;
             }else if(ratio_y<0){
