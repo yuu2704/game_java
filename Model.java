@@ -66,6 +66,7 @@ class Player extends Cpu{
 // Model
 class Model {
     public static int WIDTH=1000, HEIGHT=800, MAX_TIME=1000;    // game window
+    public static int Fig=3;    // how many figures of cpu
     protected ArrayList<Cpu> cpu;
     protected ArrayList<String> figures;    // view
     protected ArrayList<Double> speedY;     // controller
@@ -131,7 +132,7 @@ class Model {
             d=1;
             x-=WIDTH+w;
         }
-        f=(int)(Math.random()*3)+1;
+        f=(int)(Math.random()*Fig)+1;
         uouo = new Cpu(x,y,w,h,s,p,d,f);
         cpu.add(uouo);
         newUOUO = uouo;
