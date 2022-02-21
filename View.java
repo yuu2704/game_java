@@ -64,14 +64,14 @@ class UOUOPanel extends JPanel{
     public void createLabelandButton(){      //使うボタンを全部生成
         //背景
         try{
-            this.backgroundImage = ImageIO.read(new File("./background_umi.jpg"));
+            this.backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("background_umi.jpg"));
         }catch(IOException e){
             System.out.println("background image file is not found.");
             e.printStackTrace();
         }
         //スタート画面背景
         try{
-            this.startbackgroundImage = ImageIO.read(new File("./UOUO_title.png"));
+            this.startbackgroundImage = ImageIO.read(getClass().getClassLoader().getResource("UOUO_title.png"));
         }catch(IOException e){
             System.out.println("startbackground image file is not found.");
             e.printStackTrace();
@@ -79,7 +79,7 @@ class UOUOPanel extends JPanel{
         //スタートボタン
         Image startbuttonicon;
         try{
-            startbuttonicon = ImageIO.read(new File("./start_bottun.png"));
+            startbuttonicon = ImageIO.read(getClass().getClassLoader().getResource("start_bottun.png"));
             startbuttonicon = startbuttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
             startButton = new JButton(new ImageIcon(startbuttonicon));
             startButton.setContentAreaFilled(false);   //ボタン透過
@@ -134,7 +134,7 @@ class UOUOPanel extends JPanel{
         //リプレイボタン
         Image replaybuttonicon;
         try{
-            replaybuttonicon = ImageIO.read(new File("./replay_button.png"));
+            replaybuttonicon = ImageIO.read(getClass().getClassLoader().getResource("replay_button.png"));
             replaybuttonicon = replaybuttonicon.getScaledInstance(400,300,java.awt.Image.SCALE_SMOOTH);
             replayButton = new JButton(new ImageIcon(replaybuttonicon));
             replayButton.setContentAreaFilled(false);   //ボタン透過
@@ -218,8 +218,8 @@ class UOUOPanel extends JPanel{
         timebar.setValue((maxTime - model.getTime())*100/maxTime);
         for(Cpu cpu : Cpu){
             try{
-                file = new File(figures.get(cpu.getFig()));
-                BufferedImage image = ImageIO.read(file);
+                //file = new File(figures.get(cpu.getFig()));
+                BufferedImage image = ImageIO.read(getClass().getClassLoader().getResource(figures.get(cpu.getFig())));
                 int x = (int)cpu.getX();
                 int y = (int)cpu.getY();
                 int w = (int)cpu.getWidth();
@@ -236,8 +236,8 @@ class UOUOPanel extends JPanel{
             }
         }
         try{
-            file = new File(figures.get(0));
-            BufferedImage image = ImageIO.read(file);
+            //file = new File(figures.get(0));
+            BufferedImage image = ImageIO.read(getClass().getClassLoader().getResource(figures.get(0)));
             int x = (int)player.getX();
             int y = (int)player.getY();
             int w = (int)player.getWidth();
@@ -291,7 +291,7 @@ class Sounds {
     public void soundPlay(int idx){
         AudioInputStream ais_bgm = null;
         try {
-            ais_bgm = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            ais_bgm = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource(sounds.get(idx)));
             AudioFormat af = ais_bgm.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, af);
             clip_bgm = (Clip)AudioSystem.getLine(info);
@@ -307,7 +307,7 @@ class Sounds {
     public void sePlay(int idx){
         AudioInputStream ais_se = null;
         try {
-            ais_se = AudioSystem.getAudioInputStream(new File(sounds.get(idx)));
+            ais_se = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource(sounds.get(idx)));
             AudioFormat af = ais_se.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, af);
             clip_se = (Clip)AudioSystem.getLine(info);
