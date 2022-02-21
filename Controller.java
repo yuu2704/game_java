@@ -242,7 +242,6 @@ class PlayerController implements KeyListener {
         }
     }
 
-
     public void action() {
         Player player=model.getPlayer();
         int move_x=player.getMove(0);
