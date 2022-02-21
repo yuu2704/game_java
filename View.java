@@ -209,7 +209,7 @@ class UOUOPanel extends JPanel{
 
         g.drawImage(backgroundImage,0,0,frame_width,frame_height,this);
         Graphics2D g2d = (Graphics2D) g;
-        File file;
+        //File file;
         Cpu = model.getUOUOs();
         figures = model.getFigures();
         score_num_Label.setText((int)player.getPoint() + "");
